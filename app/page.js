@@ -98,8 +98,8 @@ export default async function HomePage() {
     products.find((p) => (p.categories || []).some((c) => (c.slug || c) === slug));
   const catCards = categories.map((c, i) => ({
     ...c,
-    photo: productIn(c.slug)?.images?.[0]?.src || c.image?.src || null,
-    tone: (301 + i * 23) % 360,
+    photo: productIn(c.slug)?.images?.[0]?.src || null,
+    tone: [334, 320, 348, 308][i % 4],
   }));
 
   // poza panoului de ofertă: produsul de mezoterapie, nu poza de categorie
@@ -136,7 +136,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <Marquee />
+      <div className="zone--cream"><Marquee /></div>
 
       <section className="container section--tight section">
         <div className="trust-strip">
@@ -153,7 +153,7 @@ export default async function HomePage() {
       </section>
 
       <section className="container section--tight">
-        <div className="values">
+        <div className="values values--rail">
           {siteConfig.features.map((f, i) => (
             <Reveal className="value" key={f.title} delay={i * 70}>
               <span className="value__num">{String(i + 1).padStart(2, "0")}</span>
@@ -282,7 +282,7 @@ export default async function HomePage() {
 
       <FeaturedProduct product={featured} />
 
-      <section className="band--deep">
+      <section className="band--ink">
         <div className="container section">
           <Reveal className="section__head">
             <div className="section__head-text">
@@ -299,28 +299,26 @@ export default async function HomePage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
 
-      <section className="container section--tight">
-        <Reveal className="stats">
-          <div className="stats__item">
-            <b><NumberTicker value={products.length || 20} suffix="+" /></b>
-            <span>produse în stoc</span>
-          </div>
-          <div className="stats__item">
-            <b><NumberTicker value={600} suffix="+" /></b>
-            <span>comenzi livrate</span>
-          </div>
-          <div className="stats__item">
-            <b><NumberTicker value={500} suffix="+" /></b>
-            <span>clienți mulțumiți</span>
-          </div>
-          <div className="stats__item">
-            <b>48–72<span style={{ fontSize: "0.5em" }}>h</span></b>
-            <span>timp de livrare</span>
-          </div>
-        </Reveal>
+          <Reveal className="stats">
+            <div className="stats__item">
+              <b><NumberTicker value={products.length || 20} suffix="+" /></b>
+              <span>produse în stoc</span>
+            </div>
+            <div className="stats__item">
+              <b><NumberTicker value={600} suffix="+" /></b>
+              <span>comenzi livrate</span>
+            </div>
+            <div className="stats__item">
+              <b><NumberTicker value={500} suffix="+" /></b>
+              <span>clienți mulțumiți</span>
+            </div>
+            <div className="stats__item">
+              <b>48–72<span className="stats__unit">h</span></b>
+              <span>timp de livrare</span>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       <Divider label="Branduri" />

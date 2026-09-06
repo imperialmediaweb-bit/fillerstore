@@ -17,7 +17,7 @@ export default function PhotoBand({ image, kicker, title, text, cta, priority = 
         loading={priority ? "eager" : "lazy"}
         decoding="async"
       />
-      <div className="photoband__body">
+      <div className="container"><div className="photoband__body">
         {kicker && <span className="kicker">{kicker}</span>}
         {title && <h2 className="photoband__title">{title}</h2>}
         {text && <p className="photoband__text">{text}</p>}
@@ -26,7 +26,7 @@ export default function PhotoBand({ image, kicker, title, text, cta, priority = 
             {cta.label}
           </Link>
         )}
-      </div>
+      </div></div>
     </section>
   );
 }
