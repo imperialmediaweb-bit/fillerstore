@@ -2,7 +2,7 @@ import Link from "next/link";
 import ThemeStyle from "@/components/ThemeStyle";
 import PostCard from "@/components/PostCard";
 import SetupNotice from "@/components/SetupNotice";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import PageHead from "@/components/PageHead";
 import Newsletter from "@/components/Newsletter";
 import Reveal from "@/components/Reveal";
 import { getPosts, excerpt, readingTime } from "@/lib/content";
@@ -31,20 +31,18 @@ export default async function BlogPage() {
       <ThemeStyle seed={HUES.blog} />
       <JsonLd data={breadcrumbLd(CRUMBS)} />
 
+      <PageHead
+        kicker="Blog"
+        title="Articole și noutăți din estetică"
+        lead="Ce trebuie să știi despre fillere, acid hialuronic și tratamentele estetice — explicat pe înțeles, fără marketing gol."
+        crumbs={CRUMBS}
+        facts={posts.length ? [
+          { value: `${posts.length}`, label: posts.length === 1 ? "articol" : "articole" },
+          { value: "2–6 min", label: "timp de citire" },
+        ] : []}
+      />
+
       <div className="container section">
-        <Breadcrumbs items={CRUMBS} />
-
-        <div className="section__head">
-          <div className="section__head-text">
-            <span className="kicker">Blog</span>
-            <h1>Articole și noutăți</h1>
-            <p className="lead">
-              Ce trebuie să știi despre fillere, acid hialuronic și tratamentele
-              estetice — explicat pe înțeles, fără marketing gol.
-            </p>
-          </div>
-        </div>
-
         {posts.length ? (
           <>
             {lead && (

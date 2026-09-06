@@ -1,9 +1,10 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import ThemeStyle from "@/components/ThemeStyle";
 import ProductCard from "@/components/ProductCard";
 import ProductBrowser from "@/components/ProductBrowser";
 import SetupNotice from "@/components/SetupNotice";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import PageHead from "@/components/PageHead";
 import Newsletter from "@/components/Newsletter";
 import { getProducts, getCategories } from "@/lib/content";
 import { wpConfigured } from "@/lib/wp";
@@ -41,20 +42,29 @@ export default async function ProductsPage() {
       <JsonLd data={breadcrumbLd(CRUMBS)} />
       <JsonLd data={itemListLd(products)} />
 
-      <div className="container section">
-        <Breadcrumbs items={CRUMBS} />
-
-        <div className="section__head">
-          <div className="section__head-text">
-            <span className="kicker">Magazin</span>
-            <h1>Produse</h1>
-            <p className="lead">
-              Fillere, produse de mezoterapie și cosmetice profesionale — toate
-              originale, de la distribuitori autorizați.
-            </p>
+      <PageHead
+        kicker="Magazin"
+        title="Produse pentru clinici și saloane"
+        lead="Fillere, produse de mezoterapie și cosmetice profesionale — toate originale, de la distribuitori autorizați, cu trasabilitate completă."
+        crumbs={CRUMBS}
+        facts={[
+          { value: `${products.length}`, label: products.length === 1 ? "produs în stoc" : "produse în stoc" },
+          { value: "48–72 h", label: "livrare în toată țara" },
+          { value: "100%", label: "produse originale" },
+        ]}
+      >
+        {categories.length > 0 && (
+          <div className="pagehead__links">
+            {categories.map((c) => (
+              <Link key={c.slug} href={`/produse?categorie=${c.slug}`}>
+                {c.name} <b>{c.count}</b>
+              </Link>
+            ))}
           </div>
-        </div>
+        )}
+      </PageHead>
 
+      <div className="container section">
         {products.length ? (
           <Suspense fallback={<div className="grid">{items.map((it) => <div key={it.id}>{it.node}</div>)}</div>}>
             <ProductBrowser items={items} categories={categories} />

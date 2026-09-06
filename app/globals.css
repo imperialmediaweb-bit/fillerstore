@@ -4263,3 +4263,189 @@ img { max-width: 100%; }
 
 /* arama rămâne pe linii și cifre, unde e accent, nu suprafață */
 .divider__label, .site-header__note { color: hsl(340 28% 44%); }
+
+/* ==========================================================================
+   50. ANTETUL PAGINILOR INTERIOARE
+   Prima pagină are hero și benzi colorate; celelalte începeau direct cu
+   firimituri și un titlu pe fond gol — arătau ca dintr-un alt site.
+   ========================================================================== */
+
+.pagehead {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fbf0f2;
+  padding-block: clamp(30px, 4vw, 56px) clamp(38px, 5vw, 72px);
+  background:
+    radial-gradient(120% 80% at 14% 0%, var(--zone-ink-2) 0%, transparent 62%),
+    linear-gradient(158deg, var(--zone-ink) 0%, #2c0617 100%);
+  border-radius: 0 0 50% 50% / 0 0 clamp(20px, 3vw, 46px) clamp(20px, 3vw, 46px);
+}
+.pagehead::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -30%;
+  right: -6%;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(28 62% 62% / 0.22) 0%, transparent 68%);
+  filter: blur(12px);
+}
+.pagehead::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass) 50%, transparent);
+  opacity: 0.55;
+}
+
+.pagehead .crumbs { color: hsl(342 20% 76%); margin-bottom: 20px; }
+.pagehead .crumbs a { color: hsl(342 22% 84%); }
+.pagehead .crumbs a:hover { color: var(--brass-light); }
+.pagehead .crumbs span[aria-hidden] { color: hsl(342 16% 56%); }
+
+.pagehead__text { display: grid; gap: 14px; max-width: 62ch; }
+.pagehead .kicker { color: var(--brass-light); }
+.pagehead .kicker::before { background: var(--metal); }
+.pagehead h1 {
+  color: #fff;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.4rem);
+  line-height: 1.03;
+  letter-spacing: -0.032em;
+}
+.pagehead h1::after { display: none; }
+.pagehead .lead { color: hsl(342 22% 84%); max-width: 56ch; }
+
+.pagehead__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 46px);
+  margin: clamp(24px, 3vw, 38px) 0 0;
+  padding-top: clamp(18px, 2.4vw, 28px);
+  border-top: 1px solid hsl(28 30% 60% / 0.2);
+}
+.pagehead__facts dt {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.9rem);
+  line-height: 1;
+  background: linear-gradient(120deg, var(--brass-light), #f6e3c8 45%, var(--brass));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pagehead__facts dd { margin: 6px 0 0; font-size: 0.85rem; color: hsl(342 18% 78%); }
+
+/* legăturile rapide de sub antet (categorii, secțiuni) */
+.pagehead__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: clamp(20px, 2.6vw, 32px);
+}
+.pagehead__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  border-radius: var(--r-full);
+  border: 1px solid hsl(0 0% 100% / 0.24);
+  background: hsl(0 0% 100% / 0.08);
+  color: hsl(342 20% 90%);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: background var(--t) var(--ease), border-color var(--t) var(--ease),
+    transform var(--t) var(--ease);
+}
+.pagehead__links a:hover {
+  background: hsl(0 0% 100% / 0.16);
+  border-color: var(--brass-light);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.pagehead__links a b { color: var(--brass-light); font-weight: 600; }
+
+/* secțiunea de după antet nu mai are nevoie de umplutura întreagă sus */
+.pagehead + .section, .pagehead + * > .section:first-child { padding-top: clamp(28px, 3.2vw, 48px); }
+
+/* --- Pagina de contact ------------------------------------------------- */
+.contact {
+  display: grid;
+  gap: clamp(24px, 3vw, 44px);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: start;
+}
+.contact__main { display: grid; gap: 16px; }
+.contact__reasons { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; }
+.contact__reasons li {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.contact__reasons li:last-child { border-bottom: 0; }
+.contact__reasons b { display: block; margin-bottom: 4px; font-size: 1.02rem; }
+.contact__reasons span { color: var(--muted); font-size: 0.94rem; line-height: 1.55; }
+.contact__icon {
+  flex: none;
+  width: 46px; height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--accent-tint);
+  background: linear-gradient(150deg, var(--accent-wash), var(--accent-soft));
+  color: var(--accent-strong);
+}
+.contact__icon svg { width: 24px; height: 24px; display: block; }
+.contact__cta { margin-top: 8px; }
+
+.contact__aside { display: grid; gap: 16px; }
+.contact__card {
+  padding: clamp(20px, 2.4vw, 30px);
+  border-radius: var(--r-lg);
+  color: #fff;
+  background:
+    radial-gradient(110% 80% at 80% 0%, hsl(340 58% 40%) 0%, transparent 60%),
+    linear-gradient(158deg, hsl(340 56% 32%) 0%, hsl(340 74% 20%) 100%);
+  box-shadow: 0 16px 38px -24px hsl(340 60% 20% / 0.5);
+}
+.contact__card h3 { color: #fff; margin-bottom: 14px; }
+.contact__card--soft {
+  color: var(--ink);
+  background: linear-gradient(158deg, #fdf1f0 0%, #f7dbd9 100%);
+  box-shadow: none;
+  border: 1px solid hsl(357 45% 88%);
+}
+.contact__card--soft h3 { color: hsl(340 66% 24%); }
+
+.contact__dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; margin: 0; }
+.contact__dl dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  padding-top: 3px;
+}
+.contact__dl dd { margin: 0; font-size: 0.95rem; line-height: 1.5; color: hsl(342 22% 88%); }
+
+.contact__channels { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.contact__card .btn--ghost { border-color: hsl(0 0% 100% / 0.34); color: #fff; background: transparent; }
+.contact__card .btn--ghost:hover { background: hsl(0 0% 100% / 0.12); }
+.contact__card--soft .btn--ghost { border-color: hsl(340 40% 78%); color: hsl(340 66% 28%); }
+.contact__note { color: hsl(342 20% 82%); font-size: 0.88rem; margin-top: 18px; }
+.contact__note code {
+  background: hsl(0 0% 100% / 0.12);
+  border-radius: 5px;
+  padding: 1px 5px;
+  font-size: 0.86em;
+}
+
+@media (max-width: 860px) {
+  .contact { grid-template-columns: minmax(0, 1fr); }
+}
