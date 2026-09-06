@@ -2337,3 +2337,416 @@ p { text-wrap: pretty; }
 .site-footer {
   border-radius: 50% 50% 0 0 / clamp(26px, 3.5vw, 60px) clamp(26px, 3.5vw, 60px) 0 0;
 }
+
+/* ==========================================================================
+   28. VITRINE DE CATEGORIE
+   Pozele de categorie din WordPress lipsesc de multe ori, iar în locul lor
+   rămânea un dreptunghi gri. Acum fiecare categorie e un panou colorat cu
+   produsul real așezat pe un raft — arată intenționat, nu spart.
+   ========================================================================== */
+
+.vitrines {
+  display: grid;
+  gap: clamp(14px, 1.5vw, 22px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(190px, auto);
+}
+
+.vitrine {
+  --tone: 331;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 210px;
+  padding: clamp(16px, 1.8vw, 26px);
+  border-radius: var(--r-lg);
+  border: 1px solid hsl(var(--tone) 40% 88%);
+  background:
+    radial-gradient(120% 90% at 78% 8%, hsl(var(--tone) 70% 96%) 0%, transparent 62%),
+    linear-gradient(168deg, hsl(var(--tone) 46% 97%) 0%, hsl(var(--tone) 38% 93%) 58%, hsl(var(--tone) 32% 89%) 100%);
+  box-shadow: 0 1px 2px hsl(var(--tone) 40% 30% / 0.06);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease),
+    border-color var(--t) var(--ease);
+}
+.vitrine:hover {
+  transform: translateY(-5px);
+  border-color: hsl(var(--tone) 45% 78%);
+  box-shadow: 0 22px 46px -22px hsl(var(--tone) 55% 28% / 0.38);
+}
+
+/* prima vitrină ocupă două coloane și două rânduri */
+.vitrine--lead { grid-column: span 2; grid-row: span 2; min-height: 430px; }
+
+/* halo-ul colorat din spatele produsului */
+.vitrine__aura {
+  position: absolute;
+  z-index: -2;
+  top: -18%; right: -12%;
+  width: 72%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--tone) 62% 82% / 0.7) 0%, transparent 68%);
+  filter: blur(6px);
+  transition: transform var(--t-slow) var(--ease);
+}
+.vitrine--lead .vitrine__aura { top: -10%; right: 6%; width: 56%; }
+.vitrine:hover .vitrine__aura { transform: scale(1.12) translateY(-6px); }
+
+/* raftul: o linie de aramă pe care „stă" produsul */
+.vitrine__shelf {
+  position: absolute;
+  z-index: -1;
+  left: 12%; right: 8%;
+  bottom: 38%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass-light) 22%, var(--brass) 50%, var(--brass-light) 78%, transparent);
+  opacity: 0.55;
+}
+.vitrine--lead .vitrine__shelf { bottom: 42%; }
+
+.vitrine__art {
+  position: absolute;
+  z-index: -1;
+  right: clamp(6px, 1.5vw, 22px);
+  bottom: 32%;
+  width: clamp(96px, 42%, 190px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+.vitrine--lead .vitrine__art {
+  right: clamp(16px, 4vw, 60px);
+  bottom: 34%;
+  width: clamp(150px, 38%, 300px);
+}
+.vitrine__art img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 18px 24px hsl(var(--tone) 45% 25% / 0.28));
+  transform-origin: 50% 100%;
+  transition: transform var(--t-slow) var(--ease);
+}
+.vitrine:hover .vitrine__art img { transform: translateY(-8px) scale(1.05); }
+
+.vitrine__plate {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  justify-items: start;
+  max-width: 30ch;
+}
+.vitrine__eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsl(var(--tone) 52% 36%);
+}
+.vitrine__title {
+  font-family: var(--font-display, inherit);
+  font-weight: 600;
+  line-height: 1.12;
+  color: var(--ink);
+  font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.45rem);
+}
+.vitrine--lead .vitrine__title { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem); }
+.vitrine__text {
+  color: var(--ink-soft, hsl(340 12% 34%));
+  font-size: 0.93rem;
+  line-height: 1.55;
+  max-width: 34ch;
+}
+
+.vitrine__go {
+  position: absolute;
+  top: clamp(14px, 1.6vw, 22px);
+  right: clamp(14px, 1.6vw, 22px);
+  width: 38px; height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid hsl(var(--tone) 40% 80%);
+  background: hsl(0 0% 100% / 0.72);
+  color: hsl(var(--tone) 60% 32%);
+  backdrop-filter: blur(6px);
+  transition: transform var(--t) var(--ease), background var(--t) var(--ease);
+}
+/* săgeata stă în colțul cardului, nu în plăcuță */
+.vitrine .vitrine__go { position: absolute; inset: auto clamp(14px,1.6vw,22px) auto auto; top: clamp(14px,1.6vw,22px); }
+.vitrine:hover .vitrine__go { transform: translateX(3px); background: #fff; }
+
+/* vitrina de promoție: aceeași formă, dar plină de culoare */
+.vitrine--promo {
+  --tone: 338;
+  border-color: transparent;
+  background:
+    radial-gradient(100% 80% at 20% 0%, hsl(var(--tone) 70% 42%) 0%, transparent 65%),
+    linear-gradient(160deg, hsl(var(--tone) 78% 36%) 0%, hsl(var(--tone) 88% 26%) 100%);
+  color: #fff;
+}
+.vitrine--promo .vitrine__eyebrow { color: hsl(var(--tone) 70% 86%); }
+.vitrine--promo .vitrine__title { color: #fff; }
+.vitrine--promo .vitrine__text { color: hsl(0 0% 100% / 0.84); }
+.vitrine--promo .vitrine__aura {
+  background: radial-gradient(circle, hsl(28 70% 70% / 0.34) 0%, transparent 66%);
+}
+.vitrine--promo .vitrine__plate { gap: 9px; }
+
+.btn--light {
+  background: #fff;
+  color: hsl(338 80% 30%);
+  border-color: #fff;
+}
+.btn--light:hover { background: var(--cream); color: hsl(338 84% 24%); }
+
+@media (max-width: 900px) {
+  .vitrines { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vitrine--lead { grid-column: span 2; grid-row: span 1; min-height: 320px; }
+}
+@media (max-width: 560px) {
+  .vitrines { grid-template-columns: minmax(0, 1fr); }
+  .vitrine--lead { grid-column: span 1; }
+}
+
+/* ==========================================================================
+   29. VITRINA DE MEZOTERAPIE (panoul de lângă lista cu file)
+   Înainte avea text alb peste o poză care lipsea — se citea pe alb.
+   Acum e un panou colorat, cu text închis pe o plăcuță de sticlă.
+   ========================================================================== */
+
+.showcase {
+  --tone: 331;
+  position: relative;
+  min-height: 480px;
+  background: transparent;
+  box-shadow: none;
+}
+.showcase .frame__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 480px;
+  padding: clamp(20px, 2.4vw, 34px);
+  background:
+    radial-gradient(110% 70% at 50% 6%, hsl(var(--tone) 62% 95%) 0%, transparent 60%),
+    linear-gradient(172deg, hsl(var(--tone) 48% 97%) 0%, hsl(var(--tone) 40% 92%) 62%, hsl(var(--tone) 36% 88%) 100%);
+}
+.showcase__aura {
+  position: absolute;
+  top: 6%; left: 50%;
+  transform: translateX(-50%);
+  width: 78%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--tone) 64% 84% / 0.75) 0%, transparent 66%);
+}
+.showcase__art {
+  position: absolute;
+  top: 8%; left: 50%;
+  transform: translateX(-50%);
+  width: min(58%, 230px);
+  height: auto !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 24px 30px hsl(var(--tone) 45% 25% / 0.3));
+  transition: transform var(--t-slow) var(--ease);
+}
+.showcase:hover .showcase__art { transform: translateX(-50%) translateY(-10px); }
+
+.showcase__plate {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 9px;
+  justify-items: start;
+  padding: clamp(16px, 1.8vw, 22px);
+  border-radius: var(--r-md, 14px);
+  border: 1px solid hsl(0 0% 100% / 0.7);
+  background: hsl(0 0% 100% / 0.72);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 30px -18px hsl(var(--tone) 50% 30% / 0.4);
+}
+.showcase__title {
+  font-family: var(--font-display, inherit);
+  font-weight: 600;
+  line-height: 1.14;
+  color: var(--ink);
+  font-size: clamp(1.3rem, 1.1rem + 0.9vw, 1.75rem);
+}
+.showcase__text {
+  color: var(--ink-soft, hsl(340 12% 34%));
+  font-size: 0.94rem;
+  line-height: 1.55;
+  max-width: 34ch;
+}
+
+@media (max-width: 900px) {
+  .showcase, .showcase .frame__inner { min-height: 400px; }
+}
+
+/* ==========================================================================
+   30. FINISAJE: hârtie, tipografie, ramă mai fină
+   ========================================================================== */
+
+:root {
+  --font-display: Fraunces, "Iowan Old Style", Georgia, serif;
+  --font-body: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* Textura de hârtie: un strat foarte fin de granulație peste tot fundalul,
+   ca suprafețele mari de blush să nu mai pară plate. E un SVG inline, deci
+   nu costă nicio cerere în plus. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+}
+body > * { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* nimic animat aici — textura e statică intenționat */
+}
+
+/* Titlurile: optical sizing pe mărimea reală și tracking mai strâns pe
+   dimensiunile mari. Diferența e mică la citire, mare la impresie. */
+h1, h2, h3, .vitrine__title, .showcase__title {
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+h1 { letter-spacing: -0.032em; }
+h2 { letter-spacing: -0.026em; }
+.lead { text-wrap: pretty; }
+
+/* Rama de aramă: mai subțire și mai bijuterie decât înainte. Un chenar de
+   3px cu degradeu metalic, o linie interioară deschisă și o umbră caldă. */
+.frame::before { inset: -7px; }
+.frame::after {
+  inset: -1px;
+  background: linear-gradient(160deg, hsl(30 60% 96% / 0.9), hsl(28 40% 60% / 0.5));
+}
+.frame__inner { box-shadow: inset 0 0 0 1px hsl(28 35% 30% / 0.16); }
+
+/* Rândurile de produs: poza de două ori mai mare, pe o plăcuță colorată. */
+.prow__media {
+  width: 88px;
+  height: 88px;
+  flex: 0 0 88px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, var(--accent-wash), var(--accent-soft));
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.prow__media img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 6px;
+  transition: transform var(--t) var(--ease);
+}
+.prow:hover .prow__media img { transform: scale(1.07); }
+.prow__title { font-size: 0.99rem; line-height: 1.35; }
+
+@media (max-width: 560px) {
+  .prow__media { width: 68px; height: 68px; flex-basis: 68px; }
+}
+
+/* ==========================================================================
+   31. BANDĂ FOTO PE TOATĂ LĂȚIMEA
+   O singură imagine mare între secțiuni, ca pauză vizuală.
+   ========================================================================== */
+
+.photoband {
+  position: relative;
+  width: 100%;
+  min-height: clamp(300px, 42vw, 560px);
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  isolation: isolate;
+  border-block: 1px solid var(--line);
+}
+.photoband img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 32%;
+  z-index: -2;
+  transform: scale(1.02);
+  transition: transform 1.2s var(--ease);
+}
+.photoband:hover img { transform: scale(1.06); }
+.photoband::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, hsl(336 42% 12% / 0.72) 0%, hsl(336 42% 12% / 0.34) 46%, transparent 74%),
+    linear-gradient(0deg, hsl(336 42% 12% / 0.5) 0%, transparent 46%);
+}
+.photoband__body {
+  max-width: 46ch;
+  padding: clamp(28px, 5vw, 78px) clamp(20px, 5vw, 90px);
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  color: #fff;
+}
+.photoband__body .kicker { color: var(--brass-light); }
+.photoband__body .kicker::before { background: var(--metal); }
+.photoband__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  color: #fff;
+  font-size: clamp(1.8rem, 1.2rem + 2.6vw, 3.4rem);
+  text-wrap: balance;
+}
+.photoband__text {
+  color: hsl(0 0% 100% / 0.86);
+  font-size: clamp(0.98rem, 0.94rem + 0.2vw, 1.1rem);
+  line-height: 1.62;
+}
+
+@media (max-width: 700px) {
+  .photoband::after {
+    background: linear-gradient(0deg, hsl(336 42% 12% / 0.82) 0%, hsl(336 42% 12% / 0.3) 58%, transparent 100%);
+  }
+}
+
+/* Monogramă de rezervă: dacă poza produsului lipsește (sau adresa e moartă),
+   în spatele ei rămâne inițiala categoriei, gravată în aramă. Vitrina arată
+   intenționat în orice situație. */
+.vitrine__mono {
+  position: absolute;
+  z-index: -1;
+  right: 4%;
+  bottom: 30%;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(90px, 16vw, 190px);
+  line-height: 0.8;
+  color: transparent;
+  background: var(--metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.2;
+  pointer-events: none;
+  user-select: none;
+}
+.vitrine--lead .vitrine__mono { font-size: clamp(140px, 20vw, 300px); right: 8%; bottom: 32%; }

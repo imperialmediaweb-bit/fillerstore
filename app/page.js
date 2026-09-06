@@ -20,6 +20,7 @@ import ProductRow from "@/components/ProductRow";
 import Tilt3D from "@/components/effects/Tilt3D";
 import NumberTicker from "@/components/effects/NumberTicker";
 import PromoBand from "@/components/PromoBand";
+import PhotoBand from "@/components/PhotoBand";
 import Testimonials from "@/components/Testimonials";
 import { wpConfigured } from "@/lib/wp";
 import { siteConfig } from "@/lib/site";
@@ -90,11 +91,24 @@ export default async function HomePage() {
     node: <ProductRow product={p} />,
   }));
 
-  // poza panoului de ofertă: cea a categoriei de mezoterapie
-  const mezoImage =
-    categories.find((c) => c.slug === "mezoterapie")?.image?.src ||
-    categories.find((c) => c.image?.src)?.image?.src ||
-    null;
+  // Vitrinele de categorie: fiecare primește produsul real din categoria ei
+  // (pozele de categorie din WordPress lipsesc de multe ori) și un ton de
+  // culoare propriu, ca să nu semene două vitrine între ele.
+  const productIn = (slug) =>
+    products.find((p) => (p.categories || []).some((c) => (c.slug || c) === slug));
+  const catCards = categories.map((c, i) => ({
+    ...c,
+    photo: productIn(c.slug)?.images?.[0]?.src || c.image?.src || null,
+    tone: (301 + i * 23) % 360,
+  }));
+
+  // poza panoului de ofertă: produsul de mezoterapie, nu poza de categorie
+  const mezoProduct = productIn("mezoterapie") || featured;
+  const mezoImage = mezoProduct?.images?.[0]?.src || null;
+
+  // banda foto dintre secțiuni: a doua poză din slider, ca să nu se repete
+  // cu hero-ul; dacă sliderul nu e importat, cădem pe poza din „Despre”.
+  const bandImage = heroSlides[1]?.raw || heroSlides[1]?.src || null;
 
   const empty = !products.length && !posts.length;
 
@@ -178,7 +192,7 @@ export default async function HomePage() {
 
           <Reveal>
             <CategoryBento
-              categories={categories}
+              categories={catCards}
               promo={{
                 kicker: "Oferte de până la 50%",
                 title: "Super reduceri",
@@ -190,6 +204,14 @@ export default async function HomePage() {
           </Reveal>
         </section>
       )}
+
+      <PhotoBand
+        image={bandImage}
+        kicker="Rezultate naturale"
+        title="Produsele pe care le folosesc clinicile serioase"
+        text="Lucrăm doar cu distribuitori autorizați. Fiecare lot are trasabilitate completă, termen de valabilitate generos și documentație pentru cabinetul tău."
+        cta={{ label: "Vezi tot magazinul", href: "/produse" }}
+      />
 
       {galleries.map((g) => (
         <section className="container section--tight section" key={g.id}>
@@ -226,28 +248,30 @@ export default async function HomePage() {
               items={tabItems}
               categories={categories.map((c) => ({ slug: c.slug, name: c.name }))}
               panel={
-                <div className="promo-card frame frame--arch"><span className="frame__inner">
+                <div className="showcase frame frame--arch"><span className="frame__inner">
+                  <span className="showcase__aura" aria-hidden="true" />
                   {mezoImage && (
                     <img
-                      src={img(mezoImage, { w: 700, h: 900 })}
-                      srcSet={srcSet(mezoImage, [420, 700, 1000])}
-                      sizes="(max-width: 900px) 100vw, 380px"
+                      className="showcase__art"
+                      src={img(mezoImage, { w: 640, fit: "contain" })}
+                      srcSet={srcSet(mezoImage, [320, 480, 640])}
+                      sizes="(max-width: 900px) 60vw, 300px"
                       alt=""
                       loading="lazy"
                       decoding="async"
                     />
                   )}
-                  <div className="promo-card__body">
+                  <span className="showcase__plate">
                     <span className="chip">Ofertă limitată</span>
-                    <h3>Produse mezoterapie</h3>
-                    <p>
+                    <span className="showcase__title">Produse mezoterapie</span>
+                    <span className="showcase__text">
                       Super ofertă la produsele pentru mezoterapie. Branduri de
                       top: Profhilo, Revolax și altele.
-                    </p>
+                    </span>
                     <Link href="/produse?categorie=mezoterapie" className="btn btn--sm">
                       Vezi oferta
                     </Link>
-                  </div>
+                  </span>
                   </span>
                 </div>
               }
