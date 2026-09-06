@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/lib/site";
 
+// Categoriile din bara a doua — aceleași cu cele din subsol, o singură sursă.
+const SHOP_LINKS = (siteConfig.footer.find((c) => c.title === "Magazin")?.links || []).slice(0, 5);
+
 export default function Header() {
   const pathname = usePathname();
   const [stuck, setStuck] = useState(false);
@@ -49,6 +52,24 @@ export default function Header() {
             {siteConfig.name}
           </Link>
 
+          <form
+            className="hsearch"
+            role="search"
+            action="/produse"
+            onSubmit={(e) => {
+              const q = new FormData(e.currentTarget).get("q");
+              if (!String(q || "").trim()) e.preventDefault();
+            }}
+          >
+            <span className="hsearch__icon" aria-hidden="true">⌕</span>
+            <input
+              type="search"
+              name="q"
+              placeholder="Caută un produs sau un brand…"
+              aria-label="Caută în magazin"
+            />
+          </form>
+
           <nav className="nav" aria-label="Navigație principală">
             {siteConfig.nav.map((item) => (
               <Link key={item.href} href={item.href} className={isActive(item.href) ? "is-active" : undefined}>
@@ -69,6 +90,19 @@ export default function Header() {
             <span /><span /><span />
           </button>
         </div>
+
+        <div className="site-header__rail">
+          <div className="container site-header__rail-inner">
+            <nav aria-label="Categorii">
+              {SHOP_LINKS.map((l) => (
+                <Link key={l.href} href={l.href}>{l.label}</Link>
+              ))}
+            </nav>
+            <span className="site-header__note">
+              Livrare 48–72 h · produse originale, cu trasabilitate
+            </span>
+          </div>
+        </div>
       </header>
 
       <div
@@ -80,6 +114,13 @@ export default function Header() {
           {siteConfig.nav.map((item) => (
             <Link key={item.href} href={item.href}>
               {item.label}
+              <span aria-hidden="true">→</span>
+            </Link>
+          ))}
+          <span className="drawer__label">Categorii</span>
+          {SHOP_LINKS.slice(1).map((l) => (
+            <Link key={l.href} href={l.href}>
+              {l.label}
               <span aria-hidden="true">→</span>
             </Link>
           ))}

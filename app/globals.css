@@ -3261,3 +3261,161 @@ main { counter-reset: sect; }
 .vitrines .vitrine--promo {
   background: linear-gradient(158deg, var(--zone-cream) 0%, var(--zone-cream-2) 100%);
 }
+
+/* ==========================================================================
+   39. ANTETUL — spațiul mort dintre siglă și meniu
+   Erau ~450px de nimic acolo. Îi dăm o căutare (duce direct în magazin) și
+   un al doilea rând cu categoriile, ca omul să sară unde vrea din prima.
+   ========================================================================== */
+
+.site-header__inner { gap: clamp(12px, 1.6vw, 26px); }
+
+.hsearch {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  transition: border-color var(--t) var(--ease), background var(--t) var(--ease),
+    box-shadow var(--t) var(--ease);
+}
+.hsearch:focus-within {
+  background: var(--surface);
+  border-color: var(--accent-tint);
+  box-shadow: 0 0 0 4px hsl(340 60% 60% / 0.1);
+}
+.hsearch__icon { color: var(--brass); font-size: 1.1rem; line-height: 1; flex: none; }
+.hsearch input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--ink);
+  outline: none;
+}
+.hsearch input::placeholder { color: var(--muted); }
+.hsearch input::-webkit-search-cancel-button { filter: grayscale(1) opacity(0.5); }
+
+/* al doilea rând: categoriile, cu un fir de aramă deasupra */
+.site-header__rail {
+  border-top: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--accent-wash) 100%);
+}
+.site-header__rail-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 44px;
+}
+.site-header__rail nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 30px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.site-header__rail nav::-webkit-scrollbar { display: none; }
+.site-header__rail nav a {
+  position: relative;
+  white-space: nowrap;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding-block: 6px;
+}
+.site-header__rail nav a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--metal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t) var(--ease);
+}
+.site-header__rail nav a:hover { color: var(--accent-strong); }
+.site-header__rail nav a:hover::after { transform: scaleX(1); }
+
+.site-header__note {
+  flex: none;
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.drawer__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  margin-top: 10px;
+}
+
+@media (max-width: 1100px) { .hsearch { max-width: 280px; } }
+@media (max-width: 900px) {
+  .hsearch, .site-header__rail { display: none; }
+}
+
+/* ==========================================================================
+   40. SUBSOLUL — titlurile de coloană erau bordo pe bordo
+   Am schimbat fondul subsolului pe bordo, dar „Filler Store", „MAGAZIN",
+   „INFORMAȚII", „LEGAL" și rândul legal au rămas pe culorile de text închis.
+   Nu se citeau deloc.
+   ========================================================================== */
+
+.site-footer h4 { color: var(--brass-light); }
+.site-footer .brand { color: #fff; }
+.site-footer .brand__mark { background: var(--metal); color: hsl(340 70% 18%); }
+.site-footer__about p { color: hsl(342 18% 76%); }
+.site-footer__bottom {
+  border-top-color: hsl(28 30% 60% / 0.22);
+  color: hsl(342 16% 70%);
+}
+.site-footer__bottom p { color: hsl(342 16% 70%); }
+.site-footer nav a:hover { color: var(--brass-light); }
+
+/* ==========================================================================
+   41. SPAȚIILE MOARTE MARCATE PE CAPTURĂ
+   ========================================================================== */
+
+/* --- Între două secțiuni albe consecutive se adunau două umpluturi întregi
+   (până la 172px de nimic, de exemplu deasupra blogului). Când urmează una
+   după alta, a doua nu mai are nevoie de umplutura de sus la fel de mare. */
+.section + .section { padding-top: clamp(24px, 3vw, 44px); }
+.section + .divider + .section { padding-top: clamp(24px, 3vw, 44px); }
+
+/* --- Vitrina de mezoterapie: fotografiile de produs sunt decupaje pe alb,
+   iar arcul roz le scotea în evidență ca pe un dreptunghi lipit. Interiorul
+   arcului devine alb: decupajul se topește în el, iar rama de aramă în jurul
+   albului arată ca o vitrină adevărată. -------------------------------- */
+.showcase .frame__inner {
+  background: linear-gradient(180deg, #fff 0%, #fff 62%, var(--accent-wash) 100%);
+}
+.showcase__aura { display: none; }
+.showcase__art {
+  mix-blend-mode: normal;
+  width: min(76%, 300px);
+}
+.showcase__plate {
+  background: hsl(0 0% 100% / 0.94);
+  border-color: var(--line);
+  box-shadow: 0 14px 34px -20px hsl(340 40% 30% / 0.28);
+}
+
+/* --- Panoul și lista de lângă el aveau înălțimi diferite, deci rămânea un
+   gol mare fie sub arc, fie sub listă. Acum cresc împreună. ------------- */
+.tabs-section { align-items: stretch; }
+.tabs-section__panel { display: flex; }
+.showcase { flex: 1 1 auto; display: flex; flex-direction: column; }
+.showcase .frame__inner { flex: 1 1 auto; }
