@@ -3892,3 +3892,44 @@ h1, h2, .featured__copy h2, .statement__text {
    mare, jumătate din nume dispăreau („Revolax Deep Lidocaină (1x…"). ----- */
 .prow__title { -webkit-line-clamp: 3; }
 .prow__body { min-width: 0; }
+
+/* ==========================================================================
+   46. CORECȚII DUPĂ CAPTURA DE PE SITE-UL LIVE
+   ========================================================================== */
+
+/* --- Grila de categorii se sprijinea pe cel puțin patru plăci: cea mare se
+   întinde pe două coloane și două rânduri, iar restul închid pătratul. Pe
+   magazin sunt doar două categorii cu produse, deci rămânea o gaură mare în
+   colțul de jos-dreapta. Sub patru plăci, coloane egale. ----------------- */
+.vitrines--few {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  grid-auto-rows: auto;
+}
+.vitrines--few .vitrine { min-height: clamp(280px, 26vw, 360px); }
+.vitrines--few .vitrine__title { font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.7rem); }
+.vitrines--few .vitrine__mono { font-size: clamp(170px, 18vw, 260px); }
+.vitrines--few .vitrine--promo { padding-top: clamp(66px, 5.4vw, 78px); }
+
+/* --- Hero-ul avea 880px: textul e centrat, dar sub el rămâneau vreo 190px
+   de nimic — și e primul lucru pe care îl vede omul. -------------------- */
+.slider--cover .slider__slide { height: clamp(470px, 54vw, 700px); }
+
+/* --- Cardurile de blog se opreau la înălțimi diferite, după cât text avea
+   fiecare: rândul arăta neîngrijit. ------------------------------------- */
+.grid--3 { align-items: stretch; }
+.grid--3 .card { height: 100%; }
+.grid--3 .card__body { display: flex; flex-direction: column; }
+.grid--3 .card__foot { margin-top: auto; }
+
+/* --- Siglele de brand se tăiau brusc la marginile benzii. --------------- */
+.brands {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+/* --- Supratitlul benzii foto stătea pe partea luminoasă a fotografiei și
+   se pierdea. -------------------------------------------------------- */
+.photoband__body .kicker {
+  color: #fff;
+  text-shadow: 0 1px 12px hsl(340 45% 10% / 0.6);
+}

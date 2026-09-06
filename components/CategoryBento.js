@@ -14,15 +14,22 @@ export default function CategoryBento({ categories = [], promo }) {
   const list = categories.filter((c) => c?.slug).slice(0, 5);
   if (!list.length) return null;
 
+  // Grila cu placa mare pe doua coloane si doua randuri are nevoie de cel
+  // putin patru placi ca sa se inchida. Pe magazinul live sunt doar doua
+  // categorii cu produse, deci ramanea o gaura mare in coltul de jos.
+  // Sub patru placi trecem pe coloane egale, unde nu are ce sa ramana gol.
+  const total = list.length + (promo?.title ? 1 : 0);
+  const few = total < 4;
+
   return (
-    <div className="vitrines">
+    <div className={`vitrines${few ? " vitrines--few" : ""}`}>
       {list.map((c, i) => {
         const lead = i === 0;
         return (
           <Link
             key={c.slug}
             href={`/produse?categorie=${c.slug}`}
-            className={`vitrine${lead ? " vitrine--lead" : ""}`}
+className={`vitrine${lead && !few ? " vitrine--lead" : ""}`}
             style={{ "--tone": c.tone ?? 340, "--lift": c.lift ?? 0 }}
           >
             <span className="vitrine__aura" aria-hidden="true" />
@@ -36,7 +43,7 @@ export default function CategoryBento({ categories = [], promo }) {
                 {c.count} {c.count === 1 ? "produs" : "produse"}
               </span>
               <span className="vitrine__title">{c.name}</span>
-              {lead && c.description && <span className="vitrine__text">{c.description}</span>}
+              {(lead || few) && c.description && <span className="vitrine__text">{c.description}</span>}
             </span>
             <span className="vitrine__go" aria-hidden="true">→</span>
           </Link>
