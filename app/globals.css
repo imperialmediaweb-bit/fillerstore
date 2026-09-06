@@ -3977,16 +3977,31 @@ img { max-width: 100%; }
 }
 .site-header__rail nav a { padding-block: 10px; }
 
+/* Cutia butonului are 32px (cât cere degetul), dar punctul desenat rămâne
+   mic: forma se face dintr-un pseudo-element centrat, nu din fondul cutiei. */
 .slider__dot {
   position: relative;
-  height: 8px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none !important;
+  border-radius: 0;
 }
-/* zona de atins e mai mare decât punctul desenat */
-.slider__dot::after {
+.slider__dot::before {
   content: "";
   position: absolute;
-  inset: -14px -8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-full);
+  background: hsl(0 0% 100% / 0.45);
+  transition: width var(--t) var(--ease), background var(--t) var(--ease);
 }
+.slider__dot.is-active::before { width: 26px; background: #fff; }
+.slider--gallery .slider__dot::before { background: hsl(340 30% 80%); }
+.slider--gallery .slider__dot.is-active::before { background: var(--accent); }
 
 /* --- Lupa din câmpul de căutare ieșea la 3.5:1. ------------------------ */
 .hsearch__icon { color: var(--brass-deep); }
@@ -3999,7 +4014,7 @@ img { max-width: 100%; }
    „Vezi toate →" și punctele sliderului aveau 8–29px. Le dăm cutia, nu doar
    o zonă invizibilă, ca să fie de atins și pentru cine navighează cu
    tastatura sau cu un cititor de ecran. --------------------------------- */
-.slider__dot { background-clip: content-box; }
+
 .slider__dot.is-active { background-clip: content-box; }
 
 @media (max-width: 900px) {
@@ -4010,5 +4025,175 @@ img { max-width: 100%; }
 }
 
 /* punctele sliderului: zona de atins pe latime, nu doar pe inaltime */
-.slider__dot { width: 32px; height: 32px; padding: 12px 12px; }
-.slider__dot.is-active { width: 48px; }
+
+
+
+/* ==========================================================================
+   48. MAI MULTĂ CULOARE, MIȘCARE ȘI DEGRADEURI
+   Tot ce mișcă aici se oprește complet la „prefers-reduced-motion", iar
+   animațiile folosesc doar transform, opacity și background-position — nu
+   proprietăți care declanșează recalcularea așezării.
+   ========================================================================== */
+
+/* --- Cele trei promisiuni de sub hero erau ultimul rând de cutii albe din
+   pagină. Devin plăci colorate, fiecare cu tonul ei. -------------------- */
+.trust-strip__item {
+  --tone: 340;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 0;
+  color: #fff;
+  padding: clamp(18px, 2vw, 26px);
+  background:
+    radial-gradient(120% 90% at 84% 0%, hsl(var(--tone) 58% 42%) 0%, transparent 60%),
+    linear-gradient(155deg, hsl(var(--tone) 56% 33%) 0%, hsl(var(--tone) 74% 21%) 100%);
+  box-shadow: 0 14px 32px -22px hsl(340 60% 20% / 0.5);
+}
+.trust-strip__item:nth-child(2) { --tone: 348; }
+.trust-strip__item:nth-child(3) { --tone: 330; }
+.trust-strip__item:hover { border-color: transparent; box-shadow: 0 24px 46px -22px hsl(340 62% 18% / 0.6); }
+.trust-strip__item b { color: #fff; }
+.trust-strip__item span { color: hsl(0 0% 100% / 0.82); }
+.trust-strip__item i {
+  background: hsl(0 0% 100% / 0.12);
+  border: 1px solid hsl(0 0% 100% / 0.28);
+  color: var(--cream);
+}
+/* o lumină care trece peste placă la hover */
+.trust-strip__item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 30%, hsl(38 70% 80% / 0.22) 46%, transparent 62%);
+  transform: translateX(-120%);
+  transition: transform 0.9s var(--ease);
+}
+.trust-strip__item:hover::after { transform: translateX(120%); }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* --- Fondul paginii se mișcă foarte încet: aureolele calde și reci se
+     plimbă una peste alta, ca lumina prin cameră. -------------------- */
+  body { background-size: 130% 130%, 120% 120%, 130% 130%, 120% 120%, 100% 100%; animation: fondPlutitor 44s ease-in-out infinite alternate; }
+  @keyframes fondPlutitor {
+    from { background-position: 82% 4%, 6% 34%, 92% 62%, 4% 88%, 0 0; }
+    to   { background-position: 68% 12%, 18% 26%, 78% 70%, 16% 80%, 0 0; }
+  }
+
+  /* --- Banda bordo: degradeul se plimbă lent, ca un reflex pe catifea. */
+  .band--ink { background-size: 160% 160%, 200% 200%; animation: catifea 26s ease-in-out infinite alternate; }
+  @keyframes catifea {
+    from { background-position: 12% 0%, 0% 0%; }
+    to   { background-position: 78% 30%, 100% 100%; }
+  }
+
+  /* --- Butonul principal respiră discret cât stă în repaus. ---------- */
+  .btn:not(.btn--light):not(.btn--ghost) { animation: pulsButon 5.5s ease-in-out infinite; }
+  @keyframes pulsButon {
+    0%, 100% { box-shadow: 0 8px 22px -12px hsl(340 74% 30% / 0.55); }
+    50%      { box-shadow: 0 12px 30px -12px hsl(340 74% 34% / 0.8); }
+  }
+  .btn:not(.btn--light):not(.btn--ghost):hover { animation: none; }
+
+  /* --- Haloul din plăcile de categorie plutește. -------------------- */
+  .vitrine__aura { animation: halou 14s ease-in-out infinite alternate; }
+  @keyframes halou {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(-6%, 5%, 0) scale(1.14); }
+  }
+
+  /* --- Monograma se apropie ușor când treci peste placă. ------------- */
+  .vitrine__mono { transition: transform 0.8s var(--ease), opacity 0.6s var(--ease); }
+  .vitrine:hover .vitrine__mono { transform: scale(1.06) translateX(-2%); opacity: 0.16; }
+
+  /* --- Firul de aramă de sub supratitlu se desenează la intrarea în
+     ecran, în loc să apară dintr-o dată. --------------------------- */
+  .is-in .kicker::before { animation: traseuArama 0.9s var(--ease) both; }
+  @keyframes traseuArama {
+    from { transform: scaleX(0); opacity: 0; }
+    to   { transform: scaleX(1); opacity: 1; }
+  }
+  .kicker::before { transform-origin: left center; }
+
+  /* --- Citatul primește o lucire care trece o dată, lent. ----------- */
+  .statement__text {
+    background-size: 220% 100%;
+    animation: lucire 9s ease-in-out infinite alternate;
+  }
+  @keyframes lucire {
+    from { background-position: 0% 50%; }
+    to   { background-position: 100% 50%; }
+  }
+
+  /* --- Cifrele de aramă din banda bordo capătă un reflex care trece. - */
+  .band--ink .stats__item b {
+    background-size: 260% 100%;
+    animation: reflexArama 7s ease-in-out infinite alternate;
+  }
+  @keyframes reflexArama {
+    from { background-position: 0% 50%; }
+    to   { background-position: 100% 50%; }
+  }
+
+  /* --- Gemul din despărțitor sclipește rar. ------------------------- */
+  .divider__gem { animation: sclipire 6s ease-in-out infinite; }
+  @keyframes sclipire {
+    0%, 88%, 100% { transform: rotate(45deg) scale(1); filter: brightness(1); }
+    94%           { transform: rotate(45deg) scale(1.18); filter: brightness(1.35); }
+  }
+
+  /* --- Pictogramele de categorie se rotesc puțin la hover. ---------- */
+  .vitrine:hover .vitrine__badge svg { transform: rotate(-8deg) scale(1.08); }
+  .vitrine__badge svg { transition: transform 0.5s var(--ease); }
+}
+
+/* --- Mai mult degradeu pe suprafețele care erau plate ------------------ */
+
+/* linia de sub titlul de secțiune, în aramă, care crește la intrarea în ecran */
+.section__head-text h2::after {
+  content: "";
+  display: block;
+  width: clamp(56px, 7vw, 96px);
+  height: 2px;
+  margin-top: 14px;
+  border-radius: 2px;
+  background: var(--metal);
+  transform-origin: left center;
+}
+.band--ink .section__head-text h2::after { background: linear-gradient(90deg, var(--brass-light), transparent); }
+
+/* preturile capata degradeu, ca sa nu fie doar text bordo */
+.card__price, .prow__price, .product__price {
+  background: linear-gradient(120deg, hsl(340 78% 34%), hsl(348 68% 44%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.card__price s, .prow__price s {
+  -webkit-text-fill-color: var(--muted);
+  color: var(--muted);
+}
+
+/* chip-urile si etichetele: degradeu blush in loc de o singura culoare */
+.chip {
+  background: linear-gradient(135deg, var(--accent-soft), var(--accent-tint));
+  border: 1px solid hsl(340 45% 86%);
+}
+
+/* filtrele active capata degradeul butonului */
+.filters button.is-active {
+  background: linear-gradient(135deg, hsl(340 74% 38%), hsl(340 88% 26%));
+  border-color: transparent;
+}
+
+/* sectiunea de recenzii primeste un fundal propriu, nu ramane pe fond gol */
+.quote {
+  background:
+    linear-gradient(165deg, #fff 0%, var(--accent-wash) 100%);
+}
+/* Degradeul metalic are benzi deschise; pe stele mici unele dispareau.
+   Un degradeu simplu de arama le tine pe toate vizibile. */
+.quote__stars { background: linear-gradient(120deg, var(--brass-deep), var(--brass) 45%, var(--brass-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
