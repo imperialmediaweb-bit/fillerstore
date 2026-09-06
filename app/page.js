@@ -22,6 +22,8 @@ import NumberTicker from "@/components/effects/NumberTicker";
 import PromoBand from "@/components/PromoBand";
 import PhotoBand from "@/components/PhotoBand";
 import Statement from "@/components/Statement";
+import PhotoGrid from "@/components/PhotoGrid";
+import { photosFromPage } from "@/lib/pagePhotos";
 import Testimonials from "@/components/Testimonials";
 import { wpConfigured } from "@/lib/wp";
 import { siteConfig } from "@/lib/site";
@@ -44,10 +46,13 @@ const VALUES = [
 ];
 
 export default async function HomePage() {
-  const [products, posts, categories] = await Promise.all([
+  const [products, posts, categories, pozeDespre] = await Promise.all([
     getProducts({ limit: 8 }),
     getPosts({ limit: 3 }),
     getCategories(),
+    // Pagina „Despre" din WordPress are fotografii reale din cabinete, pe
+    // care nu le avem nicăieri altundeva. Le aducem și pe prima pagină.
+    photosFromPage("despre"),
   ]);
 
   // Hero-ul: întâi sliderul preluat din WordPress (pozele frumoase, cu
@@ -216,6 +221,27 @@ export default async function HomePage() {
         text="Lucrăm doar cu distribuitori autorizați. Fiecare lot are trasabilitate completă, termen de valabilitate generos și documentație pentru cabinetul tău."
         cta={{ label: "Vezi tot magazinul", href: "/produse" }}
       />
+
+      {pozeDespre.length >= 3 && (
+        <section className="container section">
+          <Reveal className="section__head">
+            <div className="section__head-text">
+              <span className="kicker">Din cabinet</span>
+              <h2>Cum arată treaba bine făcută</h2>
+              <p className="lead">
+                Fotografii din clinicile și saloanele care lucrează cu gamele
+                pe care le ținem în stoc.
+              </p>
+            </div>
+            <Link href="/despre" className="arrow-link">
+              <span>Despre noi</span><span aria-hidden="true">→</span>
+            </Link>
+          </Reveal>
+          <Reveal>
+            <PhotoGrid photos={pozeDespre} alt="Tratament estetic profesional" />
+          </Reveal>
+        </section>
+      )}
 
       {galleries.map((g) => (
         <section className="container section--tight section" key={g.id}>

@@ -10,6 +10,8 @@ import { img, srcSet } from "@/lib/img";
 import { heroSlides } from "@/lib/slides";
 import { siteConfig } from "@/lib/site";
 import { pageMeta, breadcrumbLd, JsonLd } from "@/lib/seo";
+import PhotoGrid from "@/components/PhotoGrid";
+import { aboutPage } from "@/lib/pagePhotos";
 import about from "@/content/about.json";
 
 export const revalidate = 300;
@@ -42,9 +44,16 @@ const VALORI = [
   },
 ];
 
-export default function DesprePage() {
+export default async function DesprePage() {
+  // Pagina „Despre" din WordPress are textul și fotografiile lor reale.
+  // Le folosim pe ale lor și cădem pe content/about.json doar dacă lipsesc —
+  // altfel pagina asta ar acoperi conținutul propriu al magazinului.
+  const wp = await aboutPage("despre");
+  const paragrafe = wp?.paragraphs?.length ? wp.paragraphs : (about.paragraphs || []);
   const poze = heroSlides();
-  const banda = poze[2]?.raw || poze[0]?.raw || about.image || null;
+  const galerie = wp?.photos || [];
+  const portret = galerie[0]?.src || about.image || null;
+  const banda = galerie[1]?.src || poze[2]?.raw || poze[0]?.raw || about.image || null;
 
   return (
     <>
@@ -63,10 +72,10 @@ export default function DesprePage() {
         <div className="about">
           <Reveal className="about__media frame">
             <span className="frame__inner">
-              {about.image && (
+              {portret && (
                 <img
-                  src={img(about.image, { w: 900, h: 1100 })}
-                  srcSet={srcSet(about.image, [500, 800, 1100])}
+                  src={img(portret, { w: 900, h: 1100 })}
+                  srcSet={srcSet(portret, [500, 800, 1100])}
                   sizes="(max-width: 900px) 100vw, 480px"
                   alt={about.imageAlt || "Tratament estetic profesional"}
                   loading="eager"
@@ -78,8 +87,8 @@ export default function DesprePage() {
 
           <Reveal className="about__copy">
             <span className="kicker">Cine suntem</span>
-            <h2>{about.title || "Cine suntem și ce facem"}</h2>
-            {(about.paragraphs || []).map((p) => (
+            <h2>{wp?.title || about.title || "Cine suntem și ce facem"}</h2>
+            {paragrafe.map((p) => (
               <p key={p.slice(0, 24)}>{p}</p>
             ))}
             <p>
@@ -88,6 +97,24 @@ export default function DesprePage() {
           </Reveal>
         </div>
       </section>
+
+      {galerie.length > 1 && (
+        <section className="container section">
+          <Reveal className="section__head">
+            <div className="section__head-text">
+              <span className="kicker">Din cabinet</span>
+              <h2>Produsele noastre, la lucru</h2>
+              <p className="lead">
+                Fotografii din clinicile și saloanele care lucrează cu gamele
+                pe care le ținem în stoc.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal>
+            <PhotoGrid photos={galerie.slice(1)} alt="Tratament estetic profesional" />
+          </Reveal>
+        </section>
+      )}
 
       <PhotoBand
         image={banda}

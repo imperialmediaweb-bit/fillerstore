@@ -22,9 +22,15 @@ const LEGATURI_CUNOSCUTE = new Map(
     .map((l) => [l.href.replace(/^\//, ""), l.label])
 );
 
+// Adrese care au deja pagina lor scrisa de noi. Daca le-am genera si de aici,
+// s-ar produce doua pagini pentru aceeasi adresa, iar cea din WordPress ar
+// castiga — exact ce s-a intamplat cu /despre. Continutul lor din WordPress
+// nu se pierde: paginile proprii il citesc si il afiseaza in designul nou.
+const RUTE_PROPRII = new Set(["despre", "contact-us"]);
+
 export async function generateStaticParams() {
   const pages = await getPages();
-  return pages.map((p) => ({ slug: p.slug }));
+  return pages.filter((p) => !RUTE_PROPRII.has(p.slug)).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }) {
