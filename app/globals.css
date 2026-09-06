@@ -9,17 +9,17 @@
 
 :root {
   /* neutre */
-  --ink: #17131c;
-  --ink-soft: #4b4353;
-  --muted: #837a8e;
-  --faint: #a9a1b2;
-  --line: #ebe6f0;
-  --line-strong: #ded7e5;
-  --bg: #fbfafc;
+  --ink: #24171c;
+  --ink-soft: #5a4a50;
+  --muted: #8b767d;
+  --faint: #b3a0a6;
+  --line: #f2e3e2;
+  --line-strong: #e6d2d1;
+  --bg: #fdf5f4;          /* blush cald, în familia site-ului actual */
   --surface: #ffffff;
-  --surface-2: #f6f3f8;
-  --on-deep: #f4eff7;
-  --on-deep-muted: #a79fb2;
+  --surface-2: #fbeeed;
+  --on-deep: #2a1b21;     /* benzile „deep" sunt acum deschise: text închis */
+  --on-deep-muted: #7d6a70;
 
   /* accent implicit (roz-auriu) — suprascris de fiecare pagină */
   --h: 345;
@@ -109,7 +109,7 @@ body::before {
   background:
     radial-gradient(42vw 42vw at 12% 4%, var(--aura-1), transparent 62%),
     radial-gradient(38vw 38vw at 92% 26%, var(--aura-3), transparent 60%);
-  opacity: 0.5;
+  opacity: 0.65;
   filter: blur(30px);
 }
 
@@ -265,17 +265,19 @@ p { text-wrap: pretty; }
 }
 .section__head-text { max-width: 46ch; display: grid; gap: 12px; }
 
-/* bandă întunecată, colorată cu nuanța paginii */
+/* bandă accentuată, în blush — nu întunecată. Am scos negrul: pe un
+   magazin de estetică arăta greu și rupea pagina în două. */
 .band--deep {
-  background: var(--grad-deep);
-  color: var(--on-deep);
+  background: linear-gradient(150deg, var(--accent-soft), var(--accent-wash) 55%, var(--surface));
+  color: var(--ink-soft);
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  border-block: 1px solid var(--accent-tint);
 }
-.band--deep h1, .band--deep h2, .band--deep h3 { color: var(--on-deep); }
-.band--deep .lead, .band--deep .muted { color: var(--on-deep-muted); }
-.band--deep .kicker { color: var(--accent-tint); }
+.band--deep h1, .band--deep h2, .band--deep h3 { color: var(--ink); }
+.band--deep .lead, .band--deep .muted { color: var(--ink-soft); }
+.band--deep .kicker { color: var(--accent-strong); }
 .band--deep::before {
   content: "";
   position: absolute;
@@ -284,8 +286,8 @@ p { text-wrap: pretty; }
   background:
     radial-gradient(34vw 34vw at 8% 10%, var(--aura-1), transparent 60%),
     radial-gradient(30vw 30vw at 96% 92%, var(--aura-2), transparent 58%);
-  opacity: 0.55;
-  filter: blur(20px);
+  opacity: 0.5;
+  filter: blur(24px);
 }
 
 .band--soft { background: var(--grad-soft); }
@@ -342,13 +344,12 @@ p { text-wrap: pretty; }
 .btn--ghost:hover { border-color: var(--accent); color: var(--accent-strong); box-shadow: var(--shadow-sm); }
 
 .btn--on-deep {
-  background: hsl(0 0% 100% / 0.09);
-  border: 1px solid hsl(0 0% 100% / 0.22);
-  color: var(--on-deep);
-  box-shadow: none;
-  backdrop-filter: blur(8px);
+  background: var(--surface);
+  border: 1px solid var(--accent-tint);
+  color: var(--accent-strong);
+  box-shadow: var(--shadow-xs);
 }
-.btn--on-deep:hover { background: hsl(0 0% 100% / 0.16); box-shadow: none; }
+.btn--on-deep:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
 
 .btn--sm { padding: 9px 18px; font-size: 0.86rem; }
 .btn--block { width: 100%; }
@@ -392,9 +393,9 @@ p { text-wrap: pretty; }
   letter-spacing: 0.01em;
 }
 .band--deep .chip {
-  background: hsl(0 0% 100% / 0.08);
-  border-color: hsl(0 0% 100% / 0.16);
-  color: var(--on-deep);
+  background: var(--surface);
+  border-color: var(--accent-tint);
+  color: var(--accent-strong);
 }
 
 /* ==========================================================================
@@ -1028,11 +1029,11 @@ p { text-wrap: pretty; }
 .value p { color: var(--muted); font-size: 0.94rem; }
 
 .band--deep .value {
-  background: hsl(0 0% 100% / 0.05);
-  border-color: hsl(0 0% 100% / 0.1);
+  background: hsl(0 0% 100% / 0.72);
+  border-color: var(--accent-tint);
   backdrop-filter: blur(6px);
 }
-.band--deep .value p { color: var(--on-deep-muted); }
+.band--deep .value p { color: var(--ink-soft); }
 
 /* pași numerotați, cu linie de legătură */
 .steps { display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); counter-reset: step; }
@@ -1065,11 +1066,12 @@ p { text-wrap: pretty; }
   position: relative;
   border-radius: var(--r-xl);
   padding: clamp(34px, 5vw, 66px);
-  background: var(--grad-deep);
-  color: var(--on-deep);
+  background: linear-gradient(140deg, var(--accent-soft), var(--accent-tint));
+  color: var(--ink-soft);
   overflow: hidden;
   isolation: isolate;
   text-align: center;
+  border: 1px solid var(--accent-tint);
   display: grid;
   gap: 18px;
   justify-items: center;
@@ -1084,8 +1086,8 @@ p { text-wrap: pretty; }
     radial-gradient(28vw 28vw at 88% 100%, var(--aura-2), transparent 56%);
   filter: blur(18px);
 }
-.newsletter h2 { color: var(--on-deep); max-width: 20ch; }
-.newsletter p { color: var(--on-deep-muted); max-width: 52ch; }
+.newsletter h2 { color: var(--ink); max-width: 20ch; }
+.newsletter p { color: var(--ink-soft); max-width: 52ch; }
 .newsletter__form {
   display: flex;
   gap: 10px;
@@ -1096,15 +1098,15 @@ p { text-wrap: pretty; }
   flex: 1;
   padding: 13px 20px;
   border-radius: var(--r-full);
-  border: 1px solid hsl(0 0% 100% / 0.2);
-  background: hsl(0 0% 100% / 0.08);
-  color: var(--on-deep);
+  border: 1px solid var(--accent-tint);
+  background: var(--surface);
+  color: var(--ink);
   outline: none;
   transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
 }
-.newsletter__form input::placeholder { color: hsl(0 0% 100% / 0.45); }
-.newsletter__form input:focus { border-color: var(--accent-tint); background: hsl(0 0% 100% / 0.13); }
-.newsletter small { color: hsl(0 0% 100% / 0.5); font-size: 0.78rem; }
+.newsletter__form input::placeholder { color: var(--faint); }
+.newsletter__form input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); }
+.newsletter small { color: var(--muted); font-size: 0.78rem; }
 @media (max-width: 520px) { .newsletter__form { flex-direction: column; } }
 
 /* ==========================================================================
@@ -1378,8 +1380,9 @@ p { text-wrap: pretty; }
 
 .site-footer {
   margin-top: clamp(56px, 8vw, 110px);
-  background: var(--grad-deep);
-  color: var(--on-deep-muted);
+  background: linear-gradient(180deg, var(--accent-wash), var(--accent-soft));
+  color: var(--ink-soft);
+  border-top: 1px solid var(--accent-tint);
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -1400,10 +1403,10 @@ p { text-wrap: pretty; }
   gap: clamp(28px, 4vw, 56px);
   padding-block: clamp(44px, 6vw, 76px) clamp(30px, 4vw, 46px);
 }
-.site-footer .brand { color: var(--on-deep); margin-right: 0; }
+.site-footer .brand { color: var(--ink); margin-right: 0; }
 .site-footer__about { display: grid; gap: 16px; max-width: 38ch; }
 .site-footer h4 {
-  color: var(--on-deep);
+  color: var(--ink);
   font-family: Inter, sans-serif;
   font-size: 0.76rem;
   font-weight: 600;
@@ -1413,7 +1416,7 @@ p { text-wrap: pretty; }
 }
 .site-footer nav { display: grid; gap: 10px; }
 .site-footer nav a { font-size: 0.93rem; transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); width: fit-content; }
-.site-footer nav a:hover { color: var(--on-deep); transform: translateX(3px); }
+.site-footer nav a:hover { color: var(--accent-strong); transform: translateX(3px); }
 .site-footer__bottom {
   display: flex;
   flex-wrap: wrap;
@@ -1421,7 +1424,7 @@ p { text-wrap: pretty; }
   justify-content: space-between;
   gap: 12px;
   padding-block: 22px;
-  border-top: 1px solid hsl(0 0% 100% / 0.1);
+  border-top: 1px solid var(--accent-tint);
   font-size: 0.85rem;
 }
 
@@ -1570,16 +1573,18 @@ p { text-wrap: pretty; }
   align-items: center;
   gap: 9px;
   font-size: 0.94rem;
-  color: var(--on-deep);
+  color: var(--ink);
+  font-weight: 500;
 }
 .promo__bullets i {
   font-style: normal;
   width: 22px; height: 22px;
   border-radius: 50%;
   display: grid; place-items: center;
-  background: hsl(0 0% 100% / 0.12);
-  color: var(--accent-tint);
+  background: var(--surface);
+  color: var(--accent);
   font-size: 0.75rem;
+  box-shadow: var(--shadow-xs);
 }
 .promo__media { border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow-lg); }
 .promo__media img { width: 100%; height: 100%; object-fit: cover; }
@@ -1817,7 +1822,7 @@ p { text-wrap: pretty; }
   pointer-events: none;
   background: radial-gradient(
     380px circle at var(--sx) var(--sy),
-    hsl(0 0% 100% / 0.09),
+    hsl(0 0% 100% / 0.75),
     transparent 68%
   );
   opacity: var(--s-on);
@@ -1881,4 +1886,127 @@ p { text-wrap: pretty; }
   .tilt3d__inner { transform: none !important; }
   .tilt3d__sheen, .spotlight::before { display: none; }
   .beam::before, .shimmer-text { animation: none; }
+}
+
+/* ==========================================================================
+   22. Pagina de produs — completări
+   ========================================================================== */
+
+.product__rating { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+.product__rating .quote__stars { letter-spacing: 2px; font-size: 0.9rem; }
+
+.product__actions { display: grid; gap: 10px; margin-top: 8px; }
+@media (min-width: 480px) { .product__actions { grid-template-columns: 1.2fr 1fr; } }
+
+/* tabelul de specificații */
+.specs {
+  width: 100%;
+  margin-top: 18px;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+  font-size: 0.93rem;
+}
+.specs tr + tr { border-top: 1px solid var(--line); }
+.specs tr:nth-child(odd) { background: var(--accent-wash); }
+.specs th,
+.specs td { padding: 11px 16px; text-align: left; vertical-align: top; }
+.specs th {
+  width: 40%;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.specs td { color: var(--ink); font-weight: 500; }
+
+/* galeria nu se înclină la fel de tare ca un card mic */
+.product__gallery .tilt3d { perspective: 1600px; }
+.product__gallery .tilt3d__sheen { border-radius: var(--r-lg); }
+
+/* bara lipită jos, doar pe telefon */
+.buybar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 90;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px clamp(14px, 4vw, 22px);
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background: hsl(0 0% 100% / 0.92);
+  backdrop-filter: saturate(1.6) blur(14px);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -10px 30px -20px hsl(280 24% 20% / 0.5);
+}
+.buybar__info { display: grid; line-height: 1.25; }
+.buybar__info b {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--accent-strong);
+}
+.buybar__info span { font-size: 0.78rem; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .buybar { display: flex; }
+  /* lăsăm loc sub subsol, ca bara să nu acopere ultimul rând */
+  .site-footer { padding-bottom: 72px; }
+}
+
+/* ==========================================================================
+   23. Secțiunea „cine suntem"
+   ========================================================================== */
+
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(26px, 4vw, 64px);
+  align-items: center;
+}
+.about__media {
+  position: relative;
+  margin: 0;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  aspect-ratio: 4 / 5;
+}
+.about__media img { width: 100%; height: 100%; object-fit: cover; }
+/* ramă subțire de lumină, în culoarea paginii */
+.about__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px hsl(0 0% 100% / 0.35), inset 0 -80px 90px -60px var(--glow);
+}
+
+.about__copy { display: grid; gap: 16px; align-content: center; max-width: 62ch; }
+.about__copy p { color: var(--ink-soft); }
+
+.about__highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 40px;
+  margin: 6px 0 4px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.about__highlights dt {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.65rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.about__highlights dd { margin: 4px 0 0; font-size: 0.85rem; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .about { grid-template-columns: 1fr; }
+  .about__media { aspect-ratio: 16 / 11; }
 }

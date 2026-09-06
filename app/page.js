@@ -12,6 +12,7 @@ import { img, srcSet } from "@/lib/img";
 import { heroSlides as importedHero, extraSliders } from "@/lib/slides";
 import BrandStrip from "@/components/BrandStrip";
 import CategoryBento from "@/components/CategoryBento";
+import About from "@/components/About";
 import Tilt3D from "@/components/effects/Tilt3D";
 import NumberTicker from "@/components/effects/NumberTicker";
 import PromoBand from "@/components/PromoBand";
@@ -201,6 +202,8 @@ export default async function HomePage() {
           </Reveal>
         </section>
       ))}
+
+      <About />
 
       <section className="band--deep">
         <div className="container section">

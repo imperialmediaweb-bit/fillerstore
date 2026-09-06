@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "kicker": "Filler Store",
+  "title": "Cine suntem și ce facem",
+  "paragraphs": [
+    "Filler Store este un furnizor de produse estetice de înaltă calitate, dedicat saloanelor de înfrumusețare și clinicilor estetice. Aducem pe piața din România cele mai noi produse pe bază de acid hialuronic și soluții dermato-cosmetice avansate, ca profesioniștii din domeniu să ofere tratamente sigure, eficiente și durabile.",
+    "Selecția noastră este riguroasă: toate produsele sunt testate dermatologic și aprobate la nivel internațional. Punem accent pe calitate, siguranță și rezultate naturale — pentru rejuvenarea pielii, conturarea feței, corectarea ridurilor și refacerea volumului facial."
+  ],
+  "image": "https://www.fillerstore.ro/athugrom/2023/01/freepik-export-20241015092200XDmv-1.jpeg",
+  "imageAlt": "Tratament estetic profesional",
+  "cta": { "label": "Citește mai multe despre noi", "href": "/despre" },
+  "highlights": [
+    { "value": "10+", "label": "branduri de top" },
+    { "value": "48–72h", "label": "livrare în toată țara" },
+    { "value": "100%", "label": "produse originale" }
+  ]
+}
