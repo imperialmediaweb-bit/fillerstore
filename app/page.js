@@ -13,6 +13,10 @@ import { heroSlides as importedHero, extraSliders } from "@/lib/slides";
 import BrandStrip from "@/components/BrandStrip";
 import CategoryBento from "@/components/CategoryBento";
 import About from "@/components/About";
+import Divider from "@/components/Divider";
+import FeaturedProduct from "@/components/FeaturedProduct";
+import CategoryTabs from "@/components/CategoryTabs";
+import ProductRow from "@/components/ProductRow";
 import Tilt3D from "@/components/effects/Tilt3D";
 import NumberTicker from "@/components/effects/NumberTicker";
 import PromoBand from "@/components/PromoBand";
@@ -72,6 +76,25 @@ export default async function HomePage() {
         }))
     );
   }
+
+  // produsul pus în lumină: primul cu reducere, altfel cel mai scump
+  const featured =
+    products.find((p) => p.onSale) ||
+    [...products].sort((a, b) => (b.price ?? 0) - (a.price ?? 0))[0] ||
+    null;
+
+  // rândurile pentru lista cu file, randate aici, pe server
+  const tabItems = products.map((p) => ({
+    id: p.id,
+    categories: (p.categories || []).map((c) => c.slug || c),
+    node: <ProductRow product={p} />,
+  }));
+
+  // poza panoului de ofertă: cea a categoriei de mezoterapie
+  const mezoImage =
+    categories.find((c) => c.slug === "mezoterapie")?.image?.src ||
+    categories.find((c) => c.image?.src)?.image?.src ||
+    null;
 
   const empty = !products.length && !posts.length;
 
@@ -135,6 +158,8 @@ export default async function HomePage() {
         </div>
       )}
 
+      <Divider />
+
       {categories.length > 0 && (
         <section className="container section">
           <Reveal className="section__head">
@@ -179,7 +204,59 @@ export default async function HomePage() {
         </section>
       ))}
 
+      <Divider />
+
       <About />
+
+      {products.length > 0 && (
+        <section className="container section">
+          <Reveal className="section__head">
+            <div className="section__head-text">
+              <span className="kicker">Ofertă</span>
+              <h2>Produse pentru mezoterapie</h2>
+              <p className="lead">
+                Branduri de top pentru hidratare profundă și rejuvenare —
+                Profhilo, Revolax, Restylane.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <CategoryTabs
+              items={tabItems}
+              categories={categories.map((c) => ({ slug: c.slug, name: c.name }))}
+              panel={
+                <div className="promo-card frame frame--arch"><span className="frame__inner">
+                  {mezoImage && (
+                    <img
+                      src={img(mezoImage, { w: 700, h: 900 })}
+                      srcSet={srcSet(mezoImage, [420, 700, 1000])}
+                      sizes="(max-width: 900px) 100vw, 380px"
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                  <div className="promo-card__body">
+                    <span className="chip">Ofertă limitată</span>
+                    <h3>Produse mezoterapie</h3>
+                    <p>
+                      Super ofertă la produsele pentru mezoterapie. Branduri de
+                      top: Profhilo, Revolax și altele.
+                    </p>
+                    <Link href="/produse?categorie=mezoterapie" className="btn btn--sm">
+                      Vezi oferta
+                    </Link>
+                  </div>
+                  </span>
+                </div>
+              }
+            />
+          </Reveal>
+        </section>
+      )}
+
+      <FeaturedProduct product={featured} />
 
       <section className="band--deep">
         <div className="container section">
@@ -222,7 +299,11 @@ export default async function HomePage() {
         </Reveal>
       </section>
 
+      <Divider label="Branduri" />
+
       <BrandStrip />
+
+      <Divider />
 
       <Testimonials />
 

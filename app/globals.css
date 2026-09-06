@@ -41,6 +41,25 @@
   --aura-2: hsl(23 82% 60% / 0.34);
   --aura-3: hsl(305 76% 64% / 0.26);
 
+  /* metal: arama și cremul din tema site-ului (#B6713E, #ECDEC1).
+     Le folosim la rame, ornamente și detalii — nu la butoane, ca să nu
+     concureze cu burgundy-ul de acțiune. */
+  --brass: #b6713e;
+  --brass-deep: #8f5730;
+  --brass-light: #dba875;
+  --brass-pale: #f0dcc6;
+  --cream: #ecdec1;
+  --metal: linear-gradient(
+    145deg,
+    var(--brass-deep) 0%,
+    var(--brass-light) 18%,
+    #f7e7d2 34%,
+    var(--brass) 52%,
+    var(--brass-deep) 68%,
+    var(--brass-light) 86%,
+    var(--brass-deep) 100%
+  );
+
   /* formă */
   --r-xs: 8px;
   --r-sm: 12px;
@@ -209,7 +228,7 @@ p { text-wrap: pretty; }
   content: "";
   width: 26px;
   height: 1.5px;
-  background: var(--grad);
+  background: var(--metal);
   border-radius: 2px;
 }
 
@@ -927,7 +946,7 @@ p { text-wrap: pretty; }
   position: absolute;
   inset: 0 0 auto 0;
   height: 3px;
-  background: var(--grad);
+  background: var(--metal);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--t) var(--ease);
@@ -938,7 +957,7 @@ p { text-wrap: pretty; }
   font-family: Fraunces, Georgia, serif;
   font-size: 2.4rem;
   line-height: 1;
-  background: var(--grad);
+  background: var(--metal);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1548,7 +1567,7 @@ p { text-wrap: pretty; }
   transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
 }
 .quote:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-.quote__stars { color: var(--accent); letter-spacing: 3px; font-size: 0.95rem; }
+.quote__stars { color: var(--brass); letter-spacing: 3px; font-size: 0.95rem; }
 .quote blockquote {
   font-family: Fraunces, Georgia, serif;
   font-size: 1.06rem;
@@ -2016,4 +2035,305 @@ p { text-wrap: pretty; }
     );
   }
   .slider--cover .slider__caption-inner > * { max-width: none; }
+}
+
+/* ==========================================================================
+   25. Listă pe categorii cu file + produsul evidențiat
+   ========================================================================== */
+
+.tabs-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+@media (max-width: 900px) { .tabs-section { grid-template-columns: 1fr; } }
+
+/* panoul de ofertă, cu fotografie */
+.promo-card {
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  align-items: flex-end;
+  isolation: isolate;
+  box-shadow: var(--shadow);
+  background: var(--accent-soft);
+}
+.promo-card img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform var(--t-slow) var(--ease);
+}
+.promo-card:hover img { transform: scale(1.04); }
+.promo-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, transparent 25%, hsl(var(--h) 45% 12% / 0.72) 82%);
+}
+.promo-card__body {
+  padding: clamp(20px, 2.6vw, 30px);
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  color: #fff;
+}
+.promo-card__body h3 { color: #fff; font-size: clamp(1.3rem, 1.1rem + 0.9vw, 1.75rem); }
+.promo-card__body p { color: hsl(0 0% 100% / 0.85); font-size: 0.94rem; max-width: 34ch; }
+.promo-card__body .chip {
+  background: hsl(0 0% 100% / 0.16);
+  border-color: hsl(0 0% 100% / 0.26);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+
+/* rândurile de produs */
+.prow-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+.prow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 10px 10px;
+  border-radius: var(--r);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+.prow:hover {
+  border-color: var(--accent-tint);
+  transform: translateX(3px);
+  box-shadow: var(--shadow-sm);
+}
+.prow__media {
+  flex: none;
+  width: 62px; height: 62px;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--accent-wash);
+  display: grid;
+  place-items: center;
+}
+.prow__media img { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
+.prow__body { display: grid; gap: 3px; min-width: 0; flex: 1; }
+.prow__title {
+  font-size: 0.93rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.prow__price { font-size: 0.9rem; font-weight: 600; color: var(--accent-strong); }
+.prow__price s { color: var(--faint); font-weight: 400; margin-left: 6px; font-size: 0.85em; }
+.prow__go {
+  flex: none;
+  color: var(--faint);
+  transition: transform var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.prow:hover .prow__go { color: var(--accent); transform: translateX(3px); }
+
+/* produsul evidențiat */
+.featured {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(26px, 4vw, 60px);
+  align-items: center;
+}
+.featured__copy { display: grid; gap: 14px; align-content: center; max-width: 56ch; }
+.featured__media .slider--gallery { background: var(--surface); box-shadow: var(--shadow); }
+@media (max-width: 900px) { .featured { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   26. Rama „oglindă" pentru fotografii
+   Arcuită sus, cu o ramă fină aurie-roz și o sclipire de sticlă. E forma
+   oglinzilor din saloane — se potrivește domeniului mai bine decât un
+   dreptunghi și dă fotografiilor aer de tablou.
+   ========================================================================== */
+
+.frame {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--r-xl);
+  overflow: visible;
+}
+
+/* rama propriu-zisă: un chenar subțire în degradeu, decalat în afară */
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: -11px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--metal);
+  box-shadow: var(--shadow-lg), 0 0 0 1px hsl(28 45% 42% / 0.25);
+}
+/* un fir subțire de umbră între ramă și fotografie, ca la o ramă adevărată */
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: hsl(28 40% 22% / 0.35);
+}
+
+.frame__inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--accent-wash);
+}
+.frame__inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--t-slow) var(--ease);
+}
+.frame:hover .frame__inner img { transform: scale(1.035); }
+
+/* sclipirea de sticlă, o dungă diagonală discretă */
+.frame__inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    hsl(0 0% 100% / 0.28) 0%,
+    hsl(0 0% 100% / 0.06) 26%,
+    transparent 46%
+  );
+}
+
+/* varianta arcuită sus — forma de oglindă */
+.frame--arch,
+.frame--arch .frame__inner {
+  border-radius: 50% 50% var(--r-lg) var(--r-lg) / 30% 30% var(--r-lg) var(--r-lg);
+}
+
+/* varianta cu arc doar într-un colț, pentru panourile alăturate unei liste */
+.frame--soft,
+.frame--soft .frame__inner { border-radius: var(--r-xl); }
+
+@media (prefers-reduced-motion: reduce) {
+  .frame:hover .frame__inner img { transform: none; }
+}
+
+/* fotografiile din secțiuni sunt acum mai mari și încadrate */
+.about { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
+.about__media { aspect-ratio: 4 / 5; box-shadow: none; border-radius: inherit; }
+.about__media::after { display: none; }
+
+.promo { grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr); }
+.promo__media { box-shadow: none; aspect-ratio: 4 / 5; }
+.promo__media .frame__inner { height: 100%; }
+
+/* panoul de ofertă: poza umple rama arcuită, textul stă peste ea */
+.promo-card { min-height: 480px; background: transparent; box-shadow: none; }
+.promo-card .frame__inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+}
+.promo-card .frame__inner img { position: static; z-index: auto; }
+.promo-card__body { position: relative; z-index: 2; width: 100%; }
+
+@media (max-width: 900px) {
+  .about__media, .promo__media { aspect-ratio: 5 / 4; }
+  .promo-card { min-height: 380px; }
+}
+
+/* ==========================================================================
+   27. Despărțitoare între secțiuni
+   ========================================================================== */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 30px);
+  width: min(var(--wide), 100%);
+  margin: clamp(10px, 2vw, 26px) auto;
+  padding-inline: var(--gutter);
+}
+.divider__line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass-light) 40%, var(--brass) 50%, var(--brass-light) 60%, transparent);
+}
+
+/* piatra din mijloc — un romb mic, cu luciu */
+.divider__gem {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  rotate: 45deg;
+  border-radius: 2px;
+  background: var(--metal);
+  box-shadow: 0 0 0 5px var(--bg), 0 0 16px -4px hsl(28 60% 45% / 0.6);
+  position: relative;
+}
+.divider__gem::after {
+  content: "";
+  position: absolute;
+  inset: 1.5px auto auto 1.5px;
+  width: 3px; height: 3px;
+  border-radius: 1px;
+  background: hsl(0 0% 100% / 0.75);
+}
+
+.divider__label {
+  flex: none;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+}
+
+/* arcul de oglindă — se pune deasupra unei benzi */
+.divider--arch {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+.divider--arch svg {
+  display: block;
+  width: 100%;
+  height: clamp(28px, 4vw, 56px);
+}
+.divider--arch path {
+  stroke: var(--brass-light);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* benzile capătă margine arcuită sus și jos — forma unei oglinzi */
+.band--deep {
+  border-radius: 50% 50% 0 0 / clamp(24px, 3.5vw, 60px) clamp(24px, 3.5vw, 60px) 0 0;
+  border-block-width: 1px 0;
+}
+.band--deep + .band--deep { margin-top: 0; }
+
+/* buletinul informativ primește același arc */
+.newsletter { border-radius: 50% 50% var(--r-xl) var(--r-xl) / clamp(30px, 4vw, 70px) clamp(30px, 4vw, 70px) var(--r-xl) var(--r-xl); }
+
+/* subsolul închide pagina tot cu un arc */
+.site-footer {
+  border-radius: 50% 50% 0 0 / clamp(26px, 3.5vw, 60px) clamp(26px, 3.5vw, 60px) 0 0;
 }

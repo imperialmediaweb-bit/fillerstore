@@ -40,15 +40,17 @@ export default function PromoBand() {
           </div>
 
           {image && (
-            <div className="promo__media beam">
+            <div className="promo__media frame frame--arch">
+              <span className="frame__inner">
               <img
-                src={img(image, { w: 800, h: 900 })}
-                srcSet={srcSet(image, [500, 800, 1100])}
-                sizes="(max-width: 900px) 100vw, 440px"
+                src={img(image, { w: 1000, h: 1250 })}
+                srcSet={srcSet(image, [600, 900, 1300])}
+                sizes="(max-width: 900px) 100vw, 520px"
                 alt={auto?.alt || ""}
                 loading="lazy"
                 decoding="async"
               />
+              </span>
             </div>
           )}
           </div>

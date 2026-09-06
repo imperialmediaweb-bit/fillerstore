@@ -11,15 +11,17 @@ export default function About() {
     <section className="container section">
       <div className="about">
         {about.image && (
-          <figure className="about__media">
-            <img
-              src={img(about.image, { w: 900, h: 1000 })}
-              srcSet={srcSet(about.image, [500, 800, 1100])}
-              sizes="(max-width: 900px) 100vw, 460px"
-              alt={about.imageAlt || ""}
-              loading="lazy"
-              decoding="async"
-            />
+          <figure className="about__media frame frame--arch">
+            <span className="frame__inner">
+              <img
+                src={img(about.image, { w: 1100, h: 1400 })}
+                srcSet={srcSet(about.image, [600, 900, 1300])}
+                sizes="(max-width: 900px) 100vw, 560px"
+                alt={about.imageAlt || ""}
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
           </figure>
         )}
 
