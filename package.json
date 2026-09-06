@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p ${PORT:-3000}"
+    "start": "next start -p ${PORT:-3000}",
+    "import": "node scripts/import-wp.mjs",
+    "upload-media": "node scripts/upload-media.mjs",
+    "refresh": "npm run import && npm run upload-media"
   },
   "engines": {
     "node": ">=20"
