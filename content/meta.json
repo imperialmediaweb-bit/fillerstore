@@ -1,1 +1,13 @@
-{ "importedAt": null, "source": null, "counts": {} }
+{
+  "importedAt": "2026-09-06T06:02:34.979Z",
+  "source": "http://127.0.0.1:8901",
+  "name": "",
+  "description": "",
+  "counts": {
+    "products": 0,
+    "categories": 0,
+    "posts": 0,
+    "pages": 0,
+    "media": 0
+  }
+}

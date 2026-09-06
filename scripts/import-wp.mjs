@@ -12,7 +12,7 @@
 // are nevoie de acces la internet către site-ul WordPress.
 
 import "./load-env.mjs";
-import { writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const BASE = (process.env.WORDPRESS_URL || "").replace(/\/+$/, "");
@@ -181,8 +181,36 @@ async function main() {
     "images.json": images,
     "meta.json": meta,
   };
+  // Regula de aur: NU golim niciodată un fișier care avea conținut.
+  //
+  // Dacă API-ul WordPress nu răspunde (e blocat, un plugin de securitate îl
+  // ascunde, site-ul e picat), importul întoarce liste goale. Scrise ca atare,
+  // ar șterge tot conținutul bun și magazinul ar rămâne gol după deploy.
+  // Așa că păstrăm ce era și spunem limpede ce nu a mers.
+  const kept = [];
   for (const [name, data] of Object.entries(files)) {
-    await writeFile(resolve(OUT, name), JSON.stringify(data, null, 2) + "\n", "utf8");
+    const target = resolve(OUT, name);
+
+    if (Array.isArray(data) && data.length === 0) {
+      let previous = [];
+      try { previous = JSON.parse(await readFile(target, "utf8")); } catch { previous = []; }
+      if (Array.isArray(previous) && previous.length > 0) {
+        kept.push(`${name} (${previous.length} intrări)`);
+        continue; // păstrăm ce aveam
+      }
+    }
+
+    await writeFile(target, JSON.stringify(data, null, 2) + "\n", "utf8");
+  }
+
+  if (kept.length) {
+    console.warn(
+      "\n  ! API-ul nu a întors nimic pentru: " + kept.join(", ") +
+      "\n    Am păstrat conținutul care era deja în content/." +
+      "\n    Verifică dacă merg în browser:" +
+      `\n      ${BASE}/wp-json/wp/v2/posts` +
+      `\n      ${BASE}/wp-json/wc/store/v1/products`
+    );
   }
 
   console.log(`\nGata. ${images.length} poze de urcat pe CDN.`);
