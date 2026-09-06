@@ -22,7 +22,7 @@ export default function CategoryBento({ categories = [], promo }) {
             key={c.slug}
             href={`/produse?categorie=${c.slug}`}
             className={`vitrine${lead ? " vitrine--lead" : ""}`}
-            style={{ "--tone": c.tone ?? 331 }}
+            style={{ "--tone": c.tone ?? 340, "--lift": c.lift ?? 0 }}
           >
             <span className="vitrine__aura" aria-hidden="true" />
             <span className="vitrine__shelf" aria-hidden="true" />

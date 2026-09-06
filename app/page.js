@@ -99,7 +99,10 @@ export default async function HomePage() {
   const catCards = categories.map((c, i) => ({
     ...c,
     photo: productIn(c.slug)?.images?.[0]?.src || null,
-    tone: [334, 320, 348, 308][i % 4],
+    tone: 340,
+    // aceeași culoare, adâncimi diferite — patru nuanțe depărtate citeau ca
+    // un curcubeu de pietre prețioase, nu ca o familie
+    lift: [0, 9, -6, 15][i % 4],
   }));
 
   // poza panoului de ofertă: produsul de mezoterapie, nu poza de categorie
