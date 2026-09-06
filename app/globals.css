@@ -1344,7 +1344,7 @@ p { text-wrap: pretty; }
 }
 .site-footer .brand { color: var(--ink); margin-right: 0; }
 .site-footer__about { display: grid; gap: 16px; max-width: 38ch; }
-.site-footer h4 {
+.site-footer h4, .site-footer__coltitle {
   color: var(--ink);
   font-family: Inter, sans-serif;
   font-size: 0.76rem;
@@ -3368,7 +3368,7 @@ main { counter-reset: sect; }
    Nu se citeau deloc.
    ========================================================================== */
 
-.site-footer h4 { color: var(--brass-light); }
+.site-footer h4, .site-footer__coltitle { color: var(--brass-light); }
 .site-footer .brand { color: #fff; }
 .site-footer .brand__mark { background: var(--metal); color: hsl(340 70% 18%); }
 .site-footer__about p { color: hsl(342 18% 76%); }
@@ -3933,3 +3933,82 @@ h1, h2, .featured__copy h2, .statement__text {
   color: #fff;
   text-shadow: 0 1px 12px hsl(340 45% 10% / 0.6);
 }
+
+/* ==========================================================================
+   47. DEFECTE GĂSITE CU AUDITUL AUTOMAT (Playwright, trei lățimi de ecran)
+   ========================================================================== */
+
+/* --- Pe telefon pagina se derula lateral: 800px pe un ecran de 390. Cauza:
+   fotografia din „Despre". Îi pusesem „height: 100%" ca să se termine la
+   aceeași înălțime cu textul, dar fără lățime — imaginea își lua lățimea din
+   proporția ei (775px) într-o coloană de 354, iar celulele de grilă au
+   implicit „min-width: auto", deci nu se strâng. ------------------------- */
+img { max-width: 100%; }
+.about__media img { width: 100%; }
+.about, .featured, .tabs-section, .vitrines, .grid, .values, .stats { min-width: 0; }
+.about > *, .featured > *, .tabs-section > *, .prow__body { min-width: 0; }
+.about__media, .about__copy { min-width: 0; }
+
+@media (max-width: 900px) {
+  /* pe ecran îngust poza stă normal, nu întinsă pe înălțimea textului */
+  .about__media { align-self: auto; max-height: none; }
+  .about__media img { height: auto; }
+}
+
+/* --- Culoarea textului secundar dădea 4.2:1 pe fondul paginii, sub pragul
+   de 4.5:1 cerut pentru text normal. O închidem cât să treacă, fără să
+   devină la fel de neagră ca textul principal. --------------------------- */
+:root { --muted: #7a636b; }
+
+/* --- Supratitlurile erau de 10.9–11.2px. Sub 12px devin greu de citit,
+   mai ales scrise cu majuscule și spațiate. ----------------------------- */
+.kicker { font-size: 0.78rem; }
+.card__eyebrow, .vitrine__eyebrow, .bento__eyebrow, .prow__eyebrow { font-size: 0.75rem; }
+.divider__label { font-size: 0.75rem; }
+
+/* --- Pe telefon, legăturile din bara de categorii, din subsol și punctele
+   sliderului aveau 8–25px înălțime. Degetul are nevoie de cel puțin 32px,
+   așa că le dăm zona de atins fără să le schimbăm aspectul. -------------- */
+@media (max-width: 900px) {
+  .site-footer nav a,
+  .breadcrumbs a,
+  .breadcrumbs span { padding-block: 7px; }
+  .site-footer nav { gap: 2px; }
+}
+.site-header__rail nav a { padding-block: 10px; }
+
+.slider__dot {
+  position: relative;
+  height: 8px;
+}
+/* zona de atins e mai mare decât punctul desenat */
+.slider__dot::after {
+  content: "";
+  position: absolute;
+  inset: -14px -8px;
+}
+
+/* --- Lupa din câmpul de căutare ieșea la 3.5:1. ------------------------ */
+.hsearch__icon { color: var(--brass-deep); }
+
+/* titlurile coloanelor din subsol sunt h2 acum (h4 dupa h1 sarea doua
+   niveluri), dar arata la fel */
+.site-footer__coltitle { color: var(--brass-light); font-family: Inter, sans-serif; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; background: none; -webkit-text-fill-color: currentColor; }
+
+/* --- Zone de atins pe telefon: firimiturile, legăturile ANPC/SOL, săgețile
+   „Vezi toate →" și punctele sliderului aveau 8–29px. Le dăm cutia, nu doar
+   o zonă invizibilă, ca să fie de atins și pentru cine navighează cu
+   tastatura sau cu un cititor de ecran. --------------------------------- */
+.slider__dot { background-clip: content-box; }
+.slider__dot.is-active { background-clip: content-box; }
+
+@media (max-width: 900px) {
+  .crumbs a, .crumbs > span { display: inline-block; padding-block: 9px; }
+  .site-footer__bottom a { display: inline-block; padding: 6px 4px; }
+  .arrow-link { padding-block: 8px; }
+  .chip { padding-block: 9px; }
+}
+
+/* punctele sliderului: zona de atins pe latime, nu doar pe inaltime */
+.slider__dot { width: 32px; height: 32px; padding: 12px 12px; }
+.slider__dot.is-active { width: 48px; }

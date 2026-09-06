@@ -18,7 +18,7 @@ export default function Footer() {
 
         {siteConfig.footer.map((col) => (
           <div key={col.title}>
-            <h4>{col.title}</h4>
+            <h2 className="site-footer__coltitle">{col.title}</h2>
             <nav aria-label={col.title}>
               {col.links.map((l) => (
                 <Link key={l.href} href={l.href}>{l.label}</Link>

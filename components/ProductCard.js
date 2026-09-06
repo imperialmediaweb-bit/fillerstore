@@ -33,7 +33,7 @@ export default function ProductCard({ product, priority = false }) {
         {product.categories?.[0] && (
           <span className="card__eyebrow">{product.categories[0].name || product.categories[0]}</span>
         )}
-        <h3 className="card__title">{product.name}</h3>
+        <h2 className="card__title">{product.name}</h2>
         <div className="card__foot">
           <span className="card__price">
             {formatPrice(product)}

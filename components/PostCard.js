@@ -33,7 +33,7 @@ export default function PostCard({ post, priority = false }) {
           {" · "}
           {readingTime(post.content)} min
         </span>
-        <h3 className="card__title">{post.title}</h3>
+        <h2 className="card__title">{post.title}</h2>
         <p className="card__excerpt">{excerpt(post.excerpt || post.content, 150)}</p>
       </div>
     </Link>
