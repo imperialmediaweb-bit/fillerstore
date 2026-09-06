@@ -2750,3 +2750,79 @@ h2 { letter-spacing: -0.026em; }
   user-select: none;
 }
 .vitrine--lead .vitrine__mono { font-size: clamp(140px, 20vw, 300px); right: 8%; bottom: 32%; }
+
+/* ==========================================================================
+   32. CARDURI DE PRODUS — vitrina la scară mică
+   Fotografiile de produs sunt decupaje pe fundal alb. „cover" le tăia
+   marginile; acum stau întregi, pe un fundal colorat, ca într-o vitrină.
+   ========================================================================== */
+
+.card__media {
+  background:
+    radial-gradient(90% 70% at 50% 12%, var(--accent-soft) 0%, transparent 68%),
+    linear-gradient(168deg, var(--accent-wash) 0%, var(--surface-2) 100%);
+}
+.card__media::before {
+  content: "";
+  position: absolute;
+  left: 14%; right: 14%;
+  bottom: 22%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass-light) 24%, var(--brass) 50%, var(--brass-light) 76%, transparent);
+  opacity: 0.45;
+}
+.card__media img {
+  object-fit: contain;
+  padding: clamp(16px, 2.4vw, 30px) clamp(14px, 2vw, 26px) clamp(24px, 3vw, 40px);
+  filter: drop-shadow(0 14px 18px hsl(340 30% 30% / 0.16));
+  transform-origin: 50% 92%;
+}
+.card:hover .card__media img { transform: translateY(-6px) scale(1.05); }
+
+/* fotografiile late (articole de blog) rămân „cover" — acolo sunt scene */
+.grid--3 .card__media img, .card__media--wide img {
+  object-fit: cover;
+  padding: 0;
+  filter: none;
+}
+.grid--3 .card__media::before, .card__media--wide::before { display: none; }
+
+/* substituentul cu dungi era cel mai urât element din pagină — îl
+   înlocuim cu un degradeu calm în culorile paginii */
+.card__placeholder {
+  background:
+    radial-gradient(70% 60% at 50% 30%, var(--accent-soft) 0%, transparent 70%),
+    linear-gradient(165deg, var(--accent-wash), var(--surface-2));
+}
+
+/* linie de aramă care se aprinde la hover, sus pe card */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--metal);
+  opacity: 0;
+  transition: opacity var(--t) var(--ease);
+  pointer-events: none;
+}
+.card:hover::after { opacity: 1; }
+
+/* ==========================================================================
+   33. TITLURI DE SECȚIUNE cu index gravat
+   ========================================================================== */
+
+.section__head { counter-increment: sect; }
+main { counter-reset: sect; }
+
+.kicker { position: relative; }
+
+/* Hero: mișcare foarte lentă de apropiere, ca pozele să pară vii.
+   Se oprește complet dacă utilizatorul a cerut mai puțină mișcare. */
+@media (prefers-reduced-motion: no-preference) {
+  .slider--cover .slider__slide img { animation: kenburns 26s ease-in-out infinite alternate; }
+}
+@keyframes kenburns {
+  from { transform: scale(1.03) translate3d(0, 0, 0); }
+  to   { transform: scale(1.1) translate3d(0, -1.2%, 0); }
+}
