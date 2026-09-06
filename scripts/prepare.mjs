@@ -32,6 +32,10 @@ if (!process.env.WORDPRESS_URL) {
   const ok = await run("./import-wp.mjs");
   if (!ok) console.warn("\n[prepare] Importul nu a reușit — continui cu ultimul conținut bun.\n");
 
+  // sliderele din prima pagină; dacă content/slides.json are deja texte
+  // scrise de mână, scriptul nu le suprascrie
+  if (ok) await run("./import-slides.mjs");
+
   if (ok && hasCloudinary) {
     const uploaded = await run("./upload-media.mjs");
     if (!uploaded) console.warn("\n[prepare] Urcarea pozelor nu a reușit — pozele se vor servi din WordPress.\n");

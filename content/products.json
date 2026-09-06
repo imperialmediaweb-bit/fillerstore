@@ -1,1 +1,246 @@
-[]
+[
+  {
+    "id": 1,
+    "slug": "revolax-deep-lidocaina-1x-1-1ml",
+    "name": "Revolax Deep Lidocaină (1x 1.1ml)",
+    "permalink": "https://www.fillerstore.ro/product/revolax-deep-lidocaina-1x-1-1ml/",
+    "sku": "",
+    "onSale": false,
+    "inStock": true,
+    "price": 279,
+    "regularPrice": 279,
+    "currency": "RON",
+    "currencySymbol": "lei",
+    "shortDescription": "",
+    "description": "",
+    "images": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2024/09/deep409x532.png",
+        "alt": "Revolax Deep Lidocaină (1x 1.1ml)"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Acid hialuronic",
+        "slug": "acid-hialuronic"
+      }
+    ],
+    "rating": null,
+    "reviewCount": 0
+  },
+  {
+    "id": 2,
+    "slug": "revolax-fine-lidocaina-1x-1-1ml",
+    "name": "Revolax Fine Lidocaină (1x 1.1ml)",
+    "permalink": "https://www.fillerstore.ro/product/revolax-fine-lidocaina-1x-1-1ml/",
+    "sku": "",
+    "onSale": false,
+    "inStock": true,
+    "price": 279,
+    "regularPrice": 279,
+    "currency": "RON",
+    "currencySymbol": "lei",
+    "shortDescription": "",
+    "description": "",
+    "images": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2024/09/Screenshot51409x532.png",
+        "alt": "Revolax Fine Lidocaină (1x 1.1ml)"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Acid hialuronic",
+        "slug": "acid-hialuronic"
+      }
+    ],
+    "rating": null,
+    "reviewCount": 0
+  },
+  {
+    "id": 3,
+    "slug": "restylane-lyft-1-x-1ml",
+    "name": "Restylane Lyft (1 x 1ml)",
+    "permalink": "https://www.fillerstore.ro/product/restylane-lyft-1-x-1ml/",
+    "sku": "",
+    "onSale": false,
+    "inStock": true,
+    "price": 550,
+    "regularPrice": 550,
+    "currency": "RON",
+    "currencySymbol": "lei",
+    "shortDescription": "",
+    "description": "",
+    "images": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2024/09/lyft409x532.png",
+        "alt": "Restylane Lyft (1 x 1ml)"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Acid hialuronic",
+        "slug": "acid-hialuronic"
+      }
+    ],
+    "rating": null,
+    "reviewCount": 0
+  },
+  {
+    "id": 4,
+    "slug": "profhilo-hl-2ml",
+    "name": "Profhilo H+L 2ML",
+    "permalink": "https://www.fillerstore.ro/product/profhilo-hl-2ml/",
+    "sku": "",
+    "onSale": false,
+    "inStock": true,
+    "price": 900,
+    "regularPrice": 900,
+    "currency": "RON",
+    "currencySymbol": "lei",
+    "shortDescription": "",
+    "description": "",
+    "images": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2024/09/Screenshot53409x532.png",
+        "alt": "Profhilo H+L 2ML"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Mezoterapie",
+        "slug": "mezoterapie"
+      }
+    ],
+    "rating": null,
+    "reviewCount": 0
+  },
+  {
+    "id": 5,
+    "slug": "restylane-volyme-lidocaine-1ml",
+    "name": "Restylane Volyme Lidocaine (1ml)",
+    "permalink": "https://www.fillerstore.ro/product/restylane-volyme-lidocaine-1ml/",
+    "sku": "",
+    "onSale": false,
+    "inStock": true,
+    "price": 600,
+    "regularPrice": 600,
+    "currency": "RON",
+    "currencySymbol": "lei",
+    "shortDescription": "",
+    "description": "",
+    "images": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2024/09/Screenshot55409x532.png",
+        "alt": "Restylane Volyme Lidocaine (1ml)"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Acid hialuronic",
+        "slug": "acid-hialuronic"
+      }
+    ],
+    "rating": null,
+    "reviewCount": 0
+  },
+  {
+    "id": 6,
+    "slug": "restylane-eyelight-0-5ml",
+    "name": "Restylane Eyelight 0.5ml",
+    "permalink": "https://www.fillerstore.ro/product/restylane-eyelight-0-5ml/",
+    "sku": "",
+    "onSale": false,
+    "inStock": true,
+    "price": 530,
+    "regularPrice": 530,
+    "currency": "RON",
+    "currencySymbol": "lei",
+    "shortDescription": "",
+    "description": "",
+    "images": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2024/09/lye409x532.png",
+        "alt": "Restylane Eyelight 0.5ml"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Acid hialuronic",
+        "slug": "acid-hialuronic"
+      }
+    ],
+    "rating": null,
+    "reviewCount": 0
+  },
+  {
+    "id": 7,
+    "slug": "restylane-defyne-1ml",
+    "name": "Restylane Defyne 1ml",
+    "permalink": "https://www.fillerstore.ro/product/restylane-defyne-1ml/",
+    "sku": "",
+    "onSale": false,
+    "inStock": true,
+    "price": 600,
+    "regularPrice": 600,
+    "currency": "RON",
+    "currencySymbol": "lei",
+    "shortDescription": "",
+    "description": "",
+    "images": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2024/09/Screenshot54409x532.png",
+        "alt": "Restylane Defyne 1ml"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Acid hialuronic",
+        "slug": "acid-hialuronic"
+      }
+    ],
+    "rating": null,
+    "reviewCount": 0
+  },
+  {
+    "id": 8,
+    "slug": "revolax-sub-q-lidocaine-1x-1-1ml",
+    "name": "Revolax Sub-q Lidocaine (1x 1.1ml)",
+    "permalink": "https://www.fillerstore.ro/product/revolax-sub-q-lidocaine-1x-1-1ml/",
+    "sku": "",
+    "onSale": false,
+    "inStock": true,
+    "price": 250,
+    "regularPrice": 250,
+    "currency": "RON",
+    "currencySymbol": "lei",
+    "shortDescription": "",
+    "description": "",
+    "images": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2023/01/Screenshot68409x532.png",
+        "alt": "Revolax Sub-q Lidocaine (1x 1.1ml)"
+      },
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2023/01/Screenshot66409x532.png",
+        "alt": "Revolax Sub-q Lidocaine (1x 1.1ml)"
+      },
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2023/01/resized_product_image_3.jpeg",
+        "alt": "Revolax Sub-q Lidocaine (1x 1.1ml)"
+      },
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2023/01/fiillerstore.ro_.png",
+        "alt": "Revolax Sub-q Lidocaine (1x 1.1ml)"
+      }
+    ],
+    "categories": [
+      {
+        "name": "Acid hialuronic",
+        "slug": "acid-hialuronic"
+      }
+    ],
+    "rating": 3.0,
+    "reviewCount": 1
+  }
+]

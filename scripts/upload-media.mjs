@@ -37,20 +37,34 @@ function credentials() {
   return null;
 }
 
-// Adresa din WordPress → id stabil pe Cloudinary.
-// .../wp-content/uploads/2024/05/profhilo-h-l-800x800.jpg → fillerstore/2024/05/profhilo-h-l
+
+// Adresa din WordPress → id stabil pe CDN.
+// Atenție: fillerstore.ro nu folosește /wp-content/uploads/, ci un folder
+// redenumit (/athugrom/). De aceea nu căutăm un nume fix, ci tiparul
+// an/lună al WordPress-ului, care rămâne același indiferent de redenumire:
+//   .../athugrom/2024/09/deep409x532.png      → 2024/09/deep409x532
+//   .../wp-content/uploads/2024/09/x-800x800.jpg → 2024/09/x
+function relativeUploadPath(pathname) {
+  const byDate = pathname.match(/\/(\d{4}\/\d{2}\/[^/]+)$/);
+  if (byDate) return byDate[1];
+  // fără tipar de dată (ex. miniaturile Elementor): sărim primul segment
+  return pathname.replace(/^\/[^/]+\//, "").replace(/^\/+/, "");
+}
+
 function publicIdFor(url) {
-  let path;
+  let pathname;
   try {
-    path = decodeURIComponent(new URL(url).pathname);
+    pathname = decodeURIComponent(new URL(url).pathname);
   } catch {
-    path = url;
+    pathname = url;
   }
-  path = path.replace(/^.*\/wp-content\/uploads\//, "").replace(/^\/+/, "");
-  path = path.replace(/\.[a-z0-9]+$/i, "");     // fără extensie
-  path = path.replace(/-\d{2,4}x\d{2,4}$/i, ""); // fără sufixul de mărime pus de WP
-  path = path.replace(/[^a-zA-Z0-9/_-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
-  return `${FOLDER}/${path || createHash("sha1").update(url).digest("hex").slice(0, 16)}`;
+  let p = relativeUploadPath(pathname)
+    .replace(/\.[a-z0-9]+$/i, "")      // fără extensie
+    .replace(/-\d{2,4}x\d{2,4}$/i, "") // fără sufixul de mărime pus de WordPress
+    .replace(/[^a-zA-Z0-9/_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  return `${FOLDER}/${p || createHash("sha1").update(url).digest("hex").slice(0, 16)}`;
 }
 
 function sign(params, apiSecret) {

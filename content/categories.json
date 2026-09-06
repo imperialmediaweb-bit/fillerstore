@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "id": 1,
+    "slug": "acid-hialuronic",
+    "name": "Acid hialuronic",
+    "description": "Fillere dermice pentru rejuvenare și volumizare.",
+    "count": 7,
+    "image": {
+      "src": "https://www.fillerstore.ro/athugrom/2024/09/acid-hialuronic.jpg",
+      "alt": "Acid hialuronic"
+    }
+  },
+  {
+    "id": 2,
+    "slug": "mezoterapie",
+    "name": "Mezoterapie",
+    "description": "Tratamente avansate pentru rejuvenare, hidratare și revitalizare profundă.",
+    "count": 1,
+    "image": {
+      "src": "https://www.fillerstore.ro/athugrom/2024/09/White-Modern-Facial-Treatment-Instagram-Post-780-x-780-px-3.png",
+      "alt": "Mezoterapie"
+    }
+  },
+  {
+    "id": 3,
+    "slug": "creme-anestezice",
+    "name": "Creme anestezice",
+    "description": "Creme anestezice profesionale pentru confort maxim în timpul tratamentelor.",
+    "count": 1,
+    "image": {
+      "src": "https://www.fillerstore.ro/athugrom/2024/09/Cream-Minimalist-Cosmetic-Instagram-Post.png",
+      "alt": "Creme anestezice"
+    }
+  },
+  {
+    "id": 4,
+    "slug": "lipolitice",
+    "name": "Lipolitice",
+    "description": "Soluții pentru eliminarea grăsimii localizate și redefinirea conturului.",
+    "count": 1,
+    "image": {
+      "src": "https://www.fillerstore.ro/athugrom/2024/09/lipolitice.jpg",
+      "alt": "Lipolitice"
+    }
+  }
+]

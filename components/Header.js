@@ -38,7 +38,7 @@ export default function Header() {
       <div className="announce">
         <div className="container announce__inner">
           <span className="announce__dot" aria-hidden="true" />
-          <span>Livrare gratuită la comenzile peste 600 lei · expediere în 48–72 h</span>
+          <span>{siteConfig.announcements.join(" · ")}</span>
         </div>
       </div>
 

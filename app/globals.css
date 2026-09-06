@@ -64,8 +64,9 @@
   --t-slow: 0.7s;
 
   /* ritm */
-  --gutter: clamp(18px, 4vw, 40px);
-  --wide: 1240px;
+  --gutter: clamp(18px, 4vw, 56px);
+  --wide: 1400px;      /* pagina respiră mai mult decât grila obișnuită de 1200 */
+  --ultra: 1680px;     /* pentru benzile care merg aproape pe toată lățimea */
   --narrow: 760px;
 
   --header-h: 72px;
@@ -188,7 +189,7 @@ p { text-wrap: pretty; }
 
 .display {
   font-family: Fraunces, Georgia, serif;
-  font-size: clamp(2.6rem, 1.2rem + 6vw, 5.6rem);
+  font-size: clamp(2.7rem, 1.1rem + 6.6vw, 6.2rem);
   line-height: 0.98;
   letter-spacing: -0.035em;
   font-weight: 600;
@@ -242,6 +243,14 @@ p { text-wrap: pretty; }
   padding-inline: var(--gutter);
 }
 .container--narrow { max-width: var(--narrow); }
+.container--ultra { max-width: var(--ultra); }
+
+/* secțiune pe toată lățimea ecranului, indiferent de container */
+.full-bleed {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
 
 .section { padding-block: clamp(56px, 8vw, 112px); }
 .section--tight { padding-block: clamp(38px, 5vw, 64px); }
@@ -567,11 +576,11 @@ p { text-wrap: pretty; }
 }
 .hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
-  gap: clamp(28px, 4vw, 64px);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(28px, 4.5vw, 80px);
   align-items: center;
 }
-.hero__copy { display: grid; gap: 22px; justify-items: start; max-width: 34ch; }
+.hero__copy { display: grid; gap: 24px; justify-items: start; max-width: 36ch; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
 
 .hero__stats {
@@ -669,7 +678,7 @@ p { text-wrap: pretty; }
 .slider__link { display: block; height: 100%; }
 
 .slider--hero { border-radius: var(--r-xl); overflow: hidden; }
-.slider--hero .slider__slide { height: clamp(340px, 52vw, 560px); background: var(--surface-2); }
+.slider--hero .slider__slide { height: clamp(360px, 54vw, 640px); background: var(--surface-2); }
 /* lentă apropiere de tip Ken Burns, ca imaginile să nu pară statice */
 .slider--hero .slider__slide img { animation: kenburns 16s var(--ease-in-out) infinite alternate; }
 @keyframes kenburns {
@@ -1500,4 +1509,376 @@ p { text-wrap: pretty; }
   padding: 0 0 18px;
   color: var(--ink-soft);
   max-width: 68ch;
+}
+
+/* galeriile preluate din sliderele WordPress */
+.gallery-band { border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow); }
+.gallery-band .slider--hero .slider__slide { height: clamp(260px, 38vw, 440px); }
+
+/* ==========================================================================
+   19. Secțiuni de pe prima pagină
+   ========================================================================== */
+
+/* cele trei promisiuni de sub hero */
+.trust-strip {
+  display: grid;
+  gap: clamp(14px, 2vw, 22px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+.trust-strip__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 22px;
+  border-radius: var(--r);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+.trust-strip__item:hover { border-color: var(--accent-tint); box-shadow: var(--shadow-sm); }
+.trust-strip__item i {
+  flex: none;
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  background: var(--grad);
+  color: #fff;
+  font-style: normal;
+  font-size: 1.05rem;
+  box-shadow: var(--shadow-glow);
+}
+.trust-strip__item b { display: block; font-size: 0.98rem; margin-bottom: 3px; }
+.trust-strip__item span { color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
+
+/* banda de promovare a unui brand */
+.promo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(26px, 4vw, 56px);
+  align-items: center;
+}
+.promo__copy { display: grid; gap: 18px; justify-items: start; max-width: 52ch; }
+.promo__bullets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  list-style: none;
+  padding: 0;
+}
+.promo__bullets li {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.94rem;
+  color: var(--on-deep);
+}
+.promo__bullets i {
+  font-style: normal;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: hsl(0 0% 100% / 0.12);
+  color: var(--accent-tint);
+  font-size: 0.75rem;
+}
+.promo__media { border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow-lg); }
+.promo__media img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 900px) { .promo { grid-template-columns: 1fr; } }
+
+/* banda cu siglele producătorilor */
+.brands {
+  overflow: hidden;
+  padding-block: 8px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.brands__track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+.brands:hover .brands__track { animation-play-state: paused; }
+.brands__group { display: flex; align-items: center; gap: clamp(34px, 6vw, 74px); padding-right: clamp(34px, 6vw, 74px); }
+.brands__group img {
+  height: clamp(26px, 3.4vw, 40px);
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.45;
+  transition: filter var(--t) var(--ease), opacity var(--t) var(--ease);
+}
+.brands:hover .brands__group img { filter: grayscale(0); opacity: 0.85; }
+
+/* părerile clienților */
+.quotes {
+  display: grid;
+  gap: clamp(16px, 2vw, 24px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+.quote {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: 28px 26px;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  position: relative;
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+.quote:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.quote__stars { color: var(--accent); letter-spacing: 3px; font-size: 0.95rem; }
+.quote blockquote {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.06rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.quote figcaption { display: grid; gap: 2px; }
+.quote figcaption b { font-size: 0.92rem; }
+.quote figcaption span { color: var(--muted); font-size: 0.85rem; }
+
+/* ==========================================================================
+   20. Grila bento & banda de cifre
+   ========================================================================== */
+
+.bento {
+  display: grid;
+  gap: clamp(12px, 1.4vw, 18px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(150px, auto);
+}
+.bento__cell {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--accent-wash);
+  border: 1px solid var(--line);
+  min-height: 168px;
+  isolation: isolate;
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease),
+    border-color var(--t) var(--ease);
+}
+.bento__cell:hover { transform: translateY(-4px); border-color: var(--accent-tint); box-shadow: var(--shadow-lg); }
+
+/* prima categorie ocupă două coloane și două rânduri */
+.bento__cell--lead { grid-column: span 2; grid-row: span 2; min-height: 340px; }
+
+.bento__cell img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  transition: transform var(--t-slow) var(--ease);
+}
+.bento__cell:hover img { transform: scale(1.06); }
+.bento__cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, hsl(280 30% 8% / 0.05) 0%, hsl(280 30% 8% / 0.62) 78%);
+}
+.bento__cell .card__placeholder { position: absolute; inset: 0; z-index: -2; }
+
+.bento__body {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: clamp(16px, 2vw, 26px);
+  display: grid;
+  gap: 6px;
+  color: #fff;
+}
+.bento__eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(0 0% 100% / 0.7);
+}
+.bento__body h3 { color: #fff; font-size: clamp(1.05rem, 0.9rem + 0.7vw, 1.5rem); }
+.bento__cell--lead .bento__body h3 { font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2.1rem); }
+.bento__body p { color: hsl(0 0% 100% / 0.78); font-size: 0.92rem; max-width: 34ch; }
+.bento__go {
+  position: absolute;
+  top: clamp(14px, 2vw, 22px);
+  right: clamp(14px, 2vw, 22px);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: hsl(0 0% 100% / 0.18);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  transition: transform var(--t) var(--ease), background var(--t) var(--ease);
+}
+.bento__cell:hover .bento__go { background: var(--accent); transform: translate(3px, -3px); }
+
+/* celula de ofertă: fără poză, doar culoare de brand */
+.bento__cell--promo { background: var(--grad); border-color: transparent; }
+.bento__cell--promo::after { display: none; }
+.bento__cell--promo .bento__body { position: static; padding: clamp(20px, 2.4vw, 30px); align-content: center; height: 100%; }
+.bento__cell--promo .btn {
+  background: hsl(0 0% 100% / 0.16);
+  border: 1px solid hsl(0 0% 100% / 0.3);
+  box-shadow: none;
+  justify-self: start;
+  margin-top: 6px;
+}
+.bento__cell--promo .btn:hover { background: hsl(0 0% 100% / 0.26); box-shadow: none; }
+
+@media (max-width: 900px) {
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bento__cell--lead { grid-column: span 2; grid-row: span 1; min-height: 260px; }
+}
+@media (max-width: 520px) {
+  .bento { grid-template-columns: 1fr; }
+  .bento__cell--lead { grid-column: span 1; }
+}
+
+/* banda de cifre */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: clamp(18px, 3vw, 40px);
+  padding: clamp(26px, 3.5vw, 44px) clamp(22px, 3vw, 44px);
+  border-radius: var(--r-xl);
+  background: var(--grad-soft);
+  border: 1px solid var(--accent-tint);
+  text-align: center;
+}
+.stats__item b {
+  display: block;
+  font-family: Fraunces, Georgia, serif;
+  font-size: clamp(2.1rem, 1.4rem + 2.4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.stats__item span { display: block; margin-top: 8px; color: var(--muted); font-size: 0.9rem; }
+
+/* ==========================================================================
+   21. Efecte 3D și de lumină
+   ========================================================================== */
+
+/* card cu înclinare 3D — variabilele sunt scrise din JavaScript */
+.tilt3d {
+  position: relative;
+  perspective: 1000px;
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  --tilt-scale: 1;
+}
+.tilt3d__inner {
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--tilt-scale));
+  transform-style: preserve-3d;
+  transition: transform 0.35s var(--ease);
+  will-change: transform;
+}
+.tilt3d:hover .tilt3d__inner { transition-duration: 0.08s; }
+
+/* luciul care alunecă peste card, în direcția înclinării */
+.tilt3d__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: var(--r-lg);
+  opacity: 0;
+  background: radial-gradient(
+    36% 44% at var(--mx) var(--my),
+    hsl(0 0% 100% / 0.5),
+    transparent 70%
+  );
+  transition: opacity var(--t) var(--ease);
+  mix-blend-mode: overlay;
+}
+.tilt3d:hover .tilt3d__sheen { opacity: 1; }
+
+/* cardul din interior „iese" din plan la înclinare */
+.tilt3d .card { transform: translateZ(0); }
+.tilt3d:hover .card { box-shadow: var(--shadow-lg), 0 40px 70px -40px var(--glow); }
+
+/* halou care urmărește cursorul, peste benzile întunecate */
+.spotlight {
+  position: relative;
+  --sx: 50%;
+  --sy: 0px;
+  --s-on: 0;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    380px circle at var(--sx) var(--sy),
+    hsl(0 0% 100% / 0.09),
+    transparent 68%
+  );
+  opacity: var(--s-on);
+  transition: opacity 0.4s var(--ease);
+}
+.spotlight > * { position: relative; z-index: 1; }
+
+/* rază de lumină care înconjoară un chenar (border beam, Magic UI) */
+.beam { position: relative; isolation: isolate; }
+.beam::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--beam-angle, 0deg),
+    transparent 0deg,
+    var(--accent-2) 40deg,
+    var(--accent-tint) 70deg,
+    transparent 130deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: beam-spin 6s linear infinite;
+}
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes beam-spin {
+  to { --beam-angle: 360deg; }
+}
+
+/* text cu degradeu care se plimbă (animated gradient text) */
+.shimmer-text {
+  background: linear-gradient(
+    100deg,
+    var(--accent-strong) 0%,
+    var(--accent-2) 30%,
+    var(--accent-strong) 60%,
+    var(--accent-2) 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+@keyframes shimmer {
+  to { background-position: 250% center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt3d__inner { transform: none !important; }
+  .tilt3d__sheen, .spotlight::before { display: none; }
+  .beam::before, .shimmer-text { animation: none; }
 }

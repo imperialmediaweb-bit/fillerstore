@@ -1,0 +1,43 @@
+[
+  {
+    "id": "hero",
+    "title": "Slider principal",
+    "slides": [
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2023/03/freepik-export-20241015122315JxNn-scaled.jpeg",
+        "alt": "Tratament cu acid hialuronic",
+        "kicker": "Cele mai mici prețuri!",
+        "title": "Efect acid hialuronic",
+        "subtitle": "Hidratează, întinerește și oferă fermitate pielii. Rezultate vizibile și de durată, fără parabeni.",
+        "href": "/produse?categorie=acid-hialuronic"
+      },
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2023/06/freepik-export-20240921064931eoti-min-scaled.jpeg",
+        "alt": "Rejuvenare prin mezoterapie",
+        "kicker": "Efect durabil",
+        "title": "Rejuvenare prin mezoterapie",
+        "subtitle": "Produse avansate pentru hidratare profundă, refacerea fermității și reducerea ridurilor.",
+        "href": "/produse?categorie=mezoterapie"
+      },
+      {
+        "src": "https://www.fillerstore.ro/athugrom/2023/06/freepik-export-20241015124610iTLh-scaled.jpeg",
+        "alt": "Produse selectate cu grijă",
+        "kicker": "Vizitează magazinul",
+        "title": "Produse selectate cu grijă",
+        "subtitle": "Fiecare produs este atent ales: soluții profesionale, sigure și eficiente pentru îngrijirea pielii.",
+        "href": "/produse"
+      }
+    ]
+  },
+  {
+    "id": "branduri",
+    "title": "Branduri",
+    "slides": [
+      { "src": "https://www.fillerstore.ro/athugrom/2024/09/revolax.png", "alt": "Revolax" },
+      { "src": "https://www.fillerstore.ro/athugrom/2024/09/Screenshot73clippedrev1184x72.png", "alt": "Restylane" },
+      { "src": "https://www.fillerstore.ro/athugrom/2024/09/Screenshot72clippedrev1184x72.png", "alt": "Profhilo" },
+      { "src": "https://www.fillerstore.ro/athugrom/2024/09/Screenshot74removebgpreview-2184x72-1.png", "alt": "Stylage" },
+      { "src": "https://www.fillerstore.ro/athugrom/2024/09/Screenshot76removebgpreview184x72.png", "alt": "Fillmed" }
+    ]
+  }
+]
