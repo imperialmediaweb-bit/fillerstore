@@ -4197,3 +4197,69 @@ img { max-width: 100%; }
 /* Degradeul metalic are benzi deschise; pe stele mici unele dispareau.
    Un degradeu simplu de arama le tine pe toate vizibile. */
 .quote__stars { background: linear-gradient(120deg, var(--brass-deep), var(--brass) 45%, var(--brass-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ==========================================================================
+   49. ÎNAPOI PE CULORILE SITE-ULUI VECHI
+   Benzile crem (banda derulantă, citatul, buletinul informativ) trăgeau spre
+   bej și scoteau pagina din paleta magazinului. Arama rămâne, dar numai ca
+   accent — linii, cifre, rame — nu ca suprafață mare.
+   Culorile vechiului site: bordo #810541, blush #F8D6D4, roz pal #FDF2F2.
+   ========================================================================== */
+
+:root {
+  --zone-cream: #fbeceb;
+  --zone-cream-2: #f6dcda;
+}
+
+/* banda derulantă: blush, nu bej */
+.zone--cream {
+  background: linear-gradient(180deg, var(--zone-cream) 0%, var(--zone-cream-2) 100%);
+  border-block-color: hsl(357 45% 88%);
+}
+.zone--cream .marquee__item,
+.zone--cream .marquee span { color: hsl(340 42% 30%); }
+.zone--cream .marquee__item i::before { color: hsl(340 60% 46%); }
+
+/* citatul: fond blush, text bordo — fără bej */
+.statement {
+  background-image:
+    radial-gradient(70% 120% at 50% 0%, #fdf3f2 0%, transparent 62%),
+    linear-gradient(180deg, var(--zone-cream) 0%, var(--zone-cream-2) 100%);
+  border-block-color: hsl(357 45% 88%);
+}
+.statement__text {
+  background: linear-gradient(160deg, hsl(340 72% 26%) 0%, hsl(340 58% 38%) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.statement__by { color: hsl(340 48% 38%); }
+.statement__mark {
+  background: linear-gradient(150deg, hsl(340 50% 72%), hsl(340 62% 52%));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.statement__rule { background: linear-gradient(90deg, transparent, hsl(340 50% 62%), transparent); }
+
+/* buletinul informativ: la fel, blush */
+.newsletter {
+  background: linear-gradient(165deg, var(--zone-cream) 0%, var(--zone-cream-2) 100%);
+  border-color: hsl(357 45% 87%);
+}
+.newsletter h2 { color: hsl(340 66% 22%); }
+.newsletter p { color: hsl(340 22% 36%); }
+.newsletter .kicker { color: hsl(340 55% 38%); }
+
+/* placa de promoție din categorii: tot blush, nu crem */
+.vitrines .vitrine--promo {
+  background: linear-gradient(158deg, #fdf1f0 0%, #f7dbd9 100%);
+}
+.vitrine--promo .vitrine__eyebrow { color: hsl(340 52% 38%); }
+.vitrine--promo .vitrine__text { color: hsl(340 20% 34%); }
+.vitrine--promo .vitrine__badge {
+  border-color: hsl(340 40% 76%);
+  background: hsl(357 60% 97% / 0.8);
+  color: hsl(340 58% 38%);
+}
+
+/* arama rămâne pe linii și cifre, unde e accent, nu suprafață */
+.divider__label, .site-header__note { color: hsl(340 28% 44%); }
