@@ -9,15 +9,15 @@
 
 :root {
   /* neutre */
-  --ink: #24171c;
+  --ink: #241419;      /* prună închisă, nu negru */
   --ink-soft: #5a4a50;
   --muted: #8b767d;
   --faint: #b3a0a6;
-  --line: #f2e3e2;
-  --line-strong: #e6d2d1;
-  --bg: #fdf5f4;          /* blush cald, în familia site-ului actual */
+  --line: #f3e7e6;
+  --line-strong: #e9d6d5;
+  --bg: #fdf8f7;          /* alb cald cu o urmă de blush — aerisit, nu roz plat */
   --surface: #ffffff;
-  --surface-2: #fbeeed;
+  --surface-2: #fbf2f1;
   --on-deep: #2a1b21;     /* benzile „deep" sunt acum deschise: text închis */
   --on-deep-muted: #7d6a70;
 
@@ -109,8 +109,8 @@ body::before {
   background:
     radial-gradient(42vw 42vw at 12% 4%, var(--aura-1), transparent 62%),
     radial-gradient(38vw 38vw at 92% 26%, var(--aura-3), transparent 60%);
-  opacity: 0.65;
-  filter: blur(30px);
+  opacity: 0.55;
+  filter: blur(36px);
 }
 
 /* granulație fină — scoate degradeurile din senzația de „plastic" */
@@ -569,91 +569,11 @@ p { text-wrap: pretty; }
 
 /* ==========================================================================
    7. Hero
+   Hero-ul e acum sliderul pe toată lățimea (secțiunea 24). Din vechiul hero
+   pe două coloane a rămas doar rândul de butoane, folosit și la pagina 404.
    ========================================================================== */
 
-.hero {
-  position: relative;
-  padding-block: clamp(30px, 5vw, 56px) clamp(40px, 6vw, 80px);
-}
-.hero__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: clamp(28px, 4.5vw, 80px);
-  align-items: center;
-}
-.hero__copy { display: grid; gap: 24px; justify-items: start; max-width: 36ch; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
-
-.hero__stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 34px;
-  margin-top: 12px;
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
-  width: 100%;
-}
-.hero__stat b {
-  display: block;
-  font-family: Fraunces, Georgia, serif;
-  font-size: 1.6rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-.hero__stat span { font-size: 0.82rem; color: var(--muted); }
-
-.hero__media {
-  position: relative;
-  border-radius: var(--r-xl);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-}
-.hero__media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 1px hsl(0 0% 100% / 0.16);
-}
-
-/* medalion plutitor peste imagine */
-.hero__badge {
-  position: absolute;
-  left: clamp(-14px, -1vw, 0px);
-  bottom: 26px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 20px 12px 14px;
-  border-radius: var(--r-full);
-  background: hsl(0 0% 100% / 0.86);
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow);
-  animation: float 7s var(--ease-in-out) infinite;
-}
-.hero__badge b { font-size: 0.9rem; display: block; line-height: 1.25; }
-.hero__badge small { color: var(--muted); font-size: 0.76rem; }
-.hero__badge i {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: var(--grad);
-  display: grid; place-items: center;
-  color: #fff; font-style: normal; font-size: 0.95rem;
-  flex: none;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-9px); }
-}
-
-@media (max-width: 900px) {
-  .hero__grid { grid-template-columns: 1fr; }
-  .hero__copy { max-width: none; }
-  .hero__badge { left: 12px; bottom: 14px; }
-}
 
 /* ==========================================================================
    8. Slider
@@ -2009,4 +1929,91 @@ p { text-wrap: pretty; }
 @media (max-width: 900px) {
   .about { grid-template-columns: 1fr; }
   .about__media { aspect-ratio: 16 / 11; }
+}
+
+/* ==========================================================================
+   24. Hero pe toată lățimea
+   ========================================================================== */
+
+.hero-full { position: relative; }
+.hero-full .slider--cover { border-radius: 0; }
+
+.slider--cover .slider__slide {
+  height: clamp(440px, 56vw, 760px);
+  background: var(--surface-2);
+}
+.slider--cover .slider__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* fotografiile au modelul spre dreapta-sus; păstrăm capul în cadru */
+  object-position: center 28%;
+  animation: kenburns 20s var(--ease-in-out) infinite alternate;
+}
+
+/* textul stă peste fotografie, în stânga, aliniat cu restul paginii */
+.slider--cover .slider__caption {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background: linear-gradient(
+    100deg,
+    hsl(var(--h) 40% 97% / 0.96) 0%,
+    hsl(var(--h) 40% 97% / 0.88) 32%,
+    hsl(var(--h) 40% 97% / 0.35) 54%,
+    transparent 72%
+  );
+  color: var(--ink);
+}
+.slider--cover .slider__caption-inner {
+  width: 100%;
+  max-width: var(--wide);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+}
+.slider--cover .slider__caption-inner > * { max-width: 30ch; }
+.slider--cover .slider__caption h2 {
+  color: var(--ink);
+  font-size: clamp(2rem, 1.1rem + 3.6vw, 3.9rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+.slider--cover .slider__caption p {
+  color: var(--ink-soft);
+  font-size: clamp(0.96rem, 0.9rem + 0.3vw, 1.1rem);
+  max-width: 42ch;
+}
+.slider--cover .slider__caption .chip {
+  background: var(--surface);
+  border-color: var(--accent-tint);
+  color: var(--accent-strong);
+  backdrop-filter: none;
+  margin-bottom: 2px;
+}
+
+.slider--cover .slider__dots { bottom: 22px; }
+.slider--cover .slider__dot { background: hsl(var(--h) 20% 40% / 0.35); box-shadow: none; }
+.slider--cover .slider__dot.is-active { background: var(--accent); }
+.slider--cover .slider__arrow { background: hsl(0 0% 100% / 0.85); }
+
+/* pe telefon textul trece peste o umbră verticală, ca să rămână lizibil */
+@media (max-width: 720px) {
+  .slider--cover .slider__slide { height: clamp(420px, 92vw, 560px); }
+  .slider--cover .slider__slide img { object-position: center 22%; }
+  .slider--cover .slider__caption {
+    align-items: flex-end;
+    padding-bottom: 46px;
+    background: linear-gradient(
+      180deg,
+      hsl(var(--h) 40% 97% / 0.1) 0%,
+      hsl(var(--h) 40% 97% / 0.72) 42%,
+      hsl(var(--h) 40% 97% / 0.97) 72%
+    );
+  }
+  .slider--cover .slider__caption-inner > * { max-width: none; }
 }

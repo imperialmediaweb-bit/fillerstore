@@ -80,48 +80,24 @@ export default async function HomePage() {
       <ThemeStyle seed={HUES.home} />
       <JsonLd data={itemListLd(products, "/")} />
 
-      <section className="hero container">
-        <div className="hero__grid">
-          <div className="hero__copy">
-            <span className="kicker">Pentru clinici și saloane</span>
-            <h1 className="display">
-              Fillere și produse <span className="hl shimmer-text">profesionale</span> de înfrumusețare
-            </h1>
-            <p className="lead">
-              Acid hialuronic, mezoterapie și cosmetice de top, la prețuri corecte.
-              Produse originale, testate dermatologic, livrate rapid în toată România.
-            </p>
-            <div className="hero__actions">
-              <Link href="/produse" className="btn">Vezi produsele</Link>
-              <Link href="/despre" className="btn btn--ghost">Despre noi</Link>
-            </div>
-            <dl className="hero__stats">
-              <div className="hero__stat"><b>{products.length ? `${products.length}+` : "20+"}</b><span>produse în stoc</span></div>
-              <div className="hero__stat"><b>48–72h</b><span>timp de livrare</span></div>
-              <div className="hero__stat"><b>100%</b><span>produse originale</span></div>
-            </dl>
-          </div>
+      {/* Hero pe toată lățimea, cu textul peste fotografie — ca pe site-ul
+          actual. Într-o casetă îngustă, fotografiile cu modele se tăiau
+          exact peste față. */}
+      <h1 className="sr-only">
+        {siteConfig.name} — fillere și produse profesionale de înfrumusețare
+      </h1>
 
-          {heroSlides.length > 0 && (
-            <div className="hero__media">
-              <Slider
-                slides={heroSlides}
-                variant="hero"
-                autoPlayMs={5500}
-                priority
-                sizes="(max-width: 900px) 100vw, 620px"
-              />
-              <div className="hero__badge">
-                <i aria-hidden="true">✓</i>
-                <div>
-                  <b>Produse originale</b>
-                  <small>de la distribuitori autorizați</small>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
+      {heroSlides.length > 0 && (
+        <section className="hero-full">
+          <Slider
+            slides={heroSlides}
+            variant="cover"
+            autoPlayMs={6500}
+            priority
+            sizes="100vw"
+          />
+        </section>
+      )}
 
       <Marquee />
 

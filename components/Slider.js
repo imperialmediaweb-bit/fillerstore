@@ -162,9 +162,12 @@ function SlideContent({ slide, sizes, eager }) {
       />
       {(slide.title || slide.subtitle || slide.kicker) && (
         <div className="slider__caption">
-          {slide.kicker && <span className="chip">{slide.kicker}</span>}
-          {slide.title && <h2>{slide.title}</h2>}
-          {slide.subtitle && <p>{slide.subtitle}</p>}
+          <div className="slider__caption-inner">
+            {slide.kicker && <span className="chip">{slide.kicker}</span>}
+            {slide.title && <h2>{slide.title}</h2>}
+            {slide.subtitle && <p>{slide.subtitle}</p>}
+            {slide.href && <span className="btn btn--sm">Vezi produsele</span>}
+          </div>
         </div>
       )}
     </>
