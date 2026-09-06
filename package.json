@@ -9,7 +9,8 @@
     "start": "next start -p ${PORT:-3000}",
     "import": "node scripts/import-wp.mjs",
     "upload-media": "node scripts/upload-media.mjs",
-    "refresh": "npm run import && npm run upload-media"
+    "refresh": "npm run import && npm run upload-media",
+    "prebuild": "node scripts/prepare.mjs"
   },
   "engines": {
     "node": ">=20"

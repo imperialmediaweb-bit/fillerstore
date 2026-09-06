@@ -7,7 +7,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import Reveal from "@/components/Reveal";
 import { getProduct, getProducts, getRelatedProducts, formatPrice, discountPercent, excerpt } from "@/lib/content";
 import { img, srcSet } from "@/lib/img";
-import { pageMeta, productLd, breadcrumbLd, JsonLd } from "@/lib/seo";
+import { pageMeta, productLd, breadcrumbLd, faqLd, JsonLd } from "@/lib/seo";
 
 export const revalidate = 300;
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }) {
   if (!product) return pageMeta({ title: "Produs negăsit", path: `/produse/${slug}`, noIndex: true });
 
   return pageMeta({
-    title: product.name,
+    title: product.seoTitle || product.name,
     description:
       excerpt(product.shortDescription || product.description, 155) ||
       `${product.name} — disponibil la Filler Store, produs original livrat rapid în toată România.`,
@@ -66,6 +66,7 @@ export default async function ProductPage({ params }) {
       <ThemeStyle seed={product.slug} />
       <JsonLd data={productLd(product)} />
       <JsonLd data={breadcrumbLd(crumbs)} />
+      <JsonLd data={faqLd(product.faq || [])} />
 
       <div className="container section">
         <Breadcrumbs items={crumbs} />
@@ -143,6 +144,29 @@ export default async function ProductPage({ params }) {
           </div>
         )}
       </div>
+
+      {product.faq?.length > 0 && (
+        <section className="container section--tight section">
+          <div className="faq">
+            <Reveal className="section__head">
+              <div className="section__head-text">
+                <span className="kicker">Întrebări frecvente</span>
+                <h2>Ce ne întreabă cel mai des</h2>
+              </div>
+            </Reveal>
+            <div className="faq__list">
+              {product.faq.map((item, i) => (
+                <Reveal key={item.q} delay={i * 60}>
+                  <details className="faq__item" name="faq-produs" open={i === 0}>
+                    <summary>{item.q}</summary>
+                    <p>{item.a}</p>
+                  </details>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="container section">
