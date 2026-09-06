@@ -3419,3 +3419,132 @@ main { counter-reset: sect; }
 .tabs-section__panel { display: flex; }
 .showcase { flex: 1 1 auto; display: flex; flex-direction: column; }
 .showcase .frame__inner { flex: 1 1 auto; }
+
+/* ==========================================================================
+   42. PASUL SPECTACULOS
+   Pagina era corectă, dar politicoasă. Trei mișcări care o fac să se vadă:
+   un hero de dimensiunea unei coperte, indici uriași de aramă lângă titluri
+   și o bandă-citat care taie pagina în două.
+   ========================================================================== */
+
+/* --- Hero de coperta ---------------------------------------------------- */
+.slider--cover .slider__slide { height: clamp(520px, 66vw, 880px); }
+
+.slider--cover .slider__caption-inner { gap: 20px; }
+.slider--cover .slider__caption-inner > * { max-width: 22ch; }
+.slider--cover .slider__caption-inner p { max-width: 34ch; }
+
+.slider--cover .slider__caption h2,
+.slider--cover .slider__caption h1 {
+  font-size: clamp(2.6rem, 1.4rem + 4.6vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+.slider--cover .slider__caption p {
+  font-size: clamp(1.02rem, 0.95rem + 0.4vw, 1.24rem);
+  line-height: 1.55;
+}
+
+/* un fir de aramă vertical, ancorat sub titlu — semnătura paginii */
+.slider--cover .slider__caption-inner::after {
+  content: "";
+  width: 1px;
+  height: clamp(40px, 6vw, 92px);
+  background: linear-gradient(180deg, var(--brass) 0%, transparent 100%);
+  margin-top: 6px;
+}
+
+/* --- Indici de secțiune, uriași, în aramă -------------------------------- */
+main { counter-reset: sect; }
+.section__head { counter-increment: sect; position: relative; }
+.section__head-text { position: relative; }
+.section__head-text::before {
+  content: counter(sect, decimal-leading-zero);
+  position: absolute;
+  left: -0.04em;
+  top: -0.42em;
+  z-index: -1;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(70px, 8vw, 150px);
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: transparent;
+  background: var(--metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.16;
+  pointer-events: none;
+  user-select: none;
+}
+.band--ink .section__head-text::before { opacity: 0.26; }
+/* filigranul stă în spatele titlului, deci are nevoie de context propriu */
+.section__head-text { isolation: isolate; }
+
+/* --- Banda-citat: o singură frază, pe toată lățimea ---------------------- */
+.statement {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(168deg, var(--zone-cream) 0%, var(--zone-cream-2) 100%);
+  border-block: 1px solid hsl(36 40% 82%);
+  text-align: center;
+}
+.statement__inner {
+  /* limita de lățime stă pe text, nu aici: pe container, „26ch" se măsoară
+     în corpul de literă al paginii și ieșea o coloană de 200px */
+  margin-inline: auto;
+  padding-block: clamp(52px, 7vw, 108px);
+  display: grid;
+  gap: 22px;
+  justify-items: center;
+}
+.statement__mark {
+  font-family: var(--font-display);
+  font-size: clamp(58px, 8vw, 120px);
+  line-height: 0.6;
+  color: transparent;
+  background: var(--metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  user-select: none;
+}
+.statement__text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 1rem + 2.2vw, 3rem);
+  line-height: 1.16;
+  letter-spacing: -0.022em;
+  color: hsl(340 62% 20%);
+  text-wrap: balance;
+  max-width: 18em;
+  margin-inline: auto;
+}
+.statement__by {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: hsl(28 52% 34%);
+}
+.statement__rule {
+  width: clamp(90px, 14vw, 190px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass), transparent);
+}
+
+/* --- Lista de produse și arcul de lângă ea aveau înălțimi diferite: rămânea
+   un gol mare în dreapta, sub listă. Rândurile se distribuie acum pe toată
+   înălțimea panoului. ---------------------------------------------------- */
+/* „space-between" pe listă a împrăștiat rândurile de produs la distanțe
+   uriașe unul de altul — mai rău decât golul pe care îl repara. Panoul
+   pornește de sus și are o înălțime apropiată de a listei. */
+.tabs-section { align-items: start; }
+.tabs-section__panel { display: flex; }
+.showcase { min-height: clamp(430px, 42vw, 560px); }
+.showcase .frame__inner { min-height: inherit; }
+
+/* --- „Despre": fotografia era mult mai înaltă decât textul, rămânea un gol
+   de vreo 200px sub el. Îi dăm pozei aceeași înălțime cu coloana de text. */
+.about__media { align-self: stretch; max-height: 620px; }
+.about__media img { height: 100%; object-fit: cover; }

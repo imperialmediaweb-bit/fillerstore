@@ -21,6 +21,7 @@ import Tilt3D from "@/components/effects/Tilt3D";
 import NumberTicker from "@/components/effects/NumberTicker";
 import PromoBand from "@/components/PromoBand";
 import PhotoBand from "@/components/PhotoBand";
+import Statement from "@/components/Statement";
 import Testimonials from "@/components/Testimonials";
 import { wpConfigured } from "@/lib/wp";
 import { siteConfig } from "@/lib/site";
@@ -282,6 +283,11 @@ export default async function HomePage() {
           </Reveal>
         </section>
       )}
+
+      <Statement
+        text="Un rezultat bun nu se vede. Se simte doar că omul din oglindă arată odihnit."
+        by="Filler Store"
+      />
 
       <FeaturedProduct product={featured} />
 
