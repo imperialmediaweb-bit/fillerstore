@@ -3548,3 +3548,154 @@ main { counter-reset: sect; }
    de vreo 200px sub el. Îi dăm pozei aceeași înălțime cu coloana de text. */
 .about__media { align-self: stretch; max-height: 620px; }
 .about__media img { height: 100%; object-fit: cover; }
+
+/* ==========================================================================
+   43. RITMUL VERTICAL, MĂSURAT
+   Am numărat golurile din pagină cu un script (dreptunghiurile lucrurilor
+   care chiar se văd — text, poze, butoane — și distanțele dintre ele):
+   19 goluri peste 70px, ~2900px din 9930. Aproape o treime din pagină era
+   aer. Cauza nu e o secțiune anume, ci umplutura de bază: 86px jos + 86px
+   sus = 172px între oricare două secțiuni, plus arcurile benzilor.
+   ========================================================================== */
+
+.section { padding-block: clamp(36px, 4vw, 64px); }
+.section--tight { padding-block: clamp(24px, 2.6vw, 40px); }
+.divider { margin-block: clamp(6px, 1vw, 14px); }
+
+/* benzile pline: umplutura lor se adaugă peste cea a secțiunii dinăuntru */
+.band--ink .section,
+.zone--cream .section,
+.photoband + * { padding-block: clamp(34px, 3.6vw, 58px); }
+
+/* banda-citat: 108px sus și jos, peste umplutura secțiunilor vecine */
+.statement__inner { padding-block: clamp(40px, 4.6vw, 74px); }
+
+/* buletinul informativ și subsolul: împreună făceau 341px de gol */
+.newsletter { padding: clamp(30px, 3.6vw, 50px); }
+.site-footer { margin-top: clamp(30px, 4vw, 56px); }
+.site-footer__top { padding-block: clamp(34px, 4vw, 58px) clamp(24px, 3vw, 40px); }
+
+/* prima secțiune de după hero nu are nevoie de umplutură dublă */
+.marquee + .section, .zone--cream + .section { padding-top: clamp(28px, 3vw, 44px); }
+
+/* --- A doua trecere, tot pe măsurători. Cele trei goluri rămase peste 180px
+   erau: buletin→subsol (225), bandă foto→„Despre" (203) și în jurul
+   benzii-citat (188). Toate trei sunt umpluturi care se adună. ---------- */
+
+/* buletinul e ultimul lucru înainte de subsol: nu are nevoie de umplutură
+   de secțiune sub el, arcul subsolului face deja despărțirea */
+.newsletter:where(.section > *, section > *) { margin-bottom: 0; }
+section:has(> .newsletter) { padding-bottom: 0; }
+.site-footer { margin-top: 0; }
+.site-footer__top { padding-top: clamp(30px, 3.4vw, 48px); }
+
+/* banda foto și banda-citat sunt ele însele pauze vizuale: secțiunea de
+   după ele nu mai are nevoie de încă una */
+.photoband + .section,
+.photoband + .divider + .section,
+.statement + .section,
+.statement + * > .section:first-child { padding-top: clamp(26px, 2.8vw, 42px); }
+.section:has(+ .statement),
+.section:has(+ .photoband) { padding-bottom: clamp(26px, 2.8vw, 42px); }
+
+/* despărțitorul ornamental ține el locul unei pauze: secțiunile din jurul
+   lui nu mai au nevoie de umplutura întreagă */
+.section:has(+ .divider) { padding-bottom: clamp(24px, 2.6vw, 38px); }
+.divider + .section { padding-top: clamp(24px, 2.6vw, 38px); }
+
+/* ==========================================================================
+   44. GRADIENTE
+   Pagina era făcută din blocuri plate despărțite de aer — de aici și o parte
+   din senzația de gol. Fondul devine un singur degradeu continuu pe toată
+   înălțimea, iar secțiunile primesc aureole care se suprapun peste el, ca
+   trecerile să fie legate, nu tăiate.
+   ========================================================================== */
+
+body {
+  background:
+    radial-gradient(1100px 700px at 82% 4%, hsl(340 52% 94%) 0%, transparent 58%),
+    radial-gradient(900px 600px at 6% 34%, hsl(28 46% 95%) 0%, transparent 55%),
+    radial-gradient(1200px 800px at 92% 62%, hsl(340 44% 95%) 0%, transparent 58%),
+    radial-gradient(900px 700px at 4% 88%, hsl(28 40% 95%) 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, hsl(340 40% 98%) 42%, var(--bg) 100%);
+  background-attachment: fixed;
+}
+
+/* titlurile mari: degradeu foarte scurt, de la bordo la cerneală — se vede
+   ca adâncime, nu ca o poză colorată peste text */
+h1, h2, .featured__copy h2, .statement__text {
+  background: linear-gradient(168deg, hsl(340 70% 24%) 0%, var(--ink) 62%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.band--ink h1, .band--ink h2,
+.photoband__title, .slider__caption h1, .slider__caption h2,
+.site-footer h2, .vitrine__title, .bento__body h3 {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: inherit;
+}
+.band--ink h2 { color: #fff; }
+.photoband__title, .slider--cover .slider__caption h2 { color: #fff; }
+.slider--cover .slider__caption h1, .slider--cover .slider__caption h2 { color: var(--ink); }
+.statement__text {
+  background: linear-gradient(160deg, hsl(340 66% 26%) 0%, hsl(28 48% 34%) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* cardurile capătă o margine în degradeu, aprinsă la hover */
+.card, .quote, .trust__item, .value:not(.values--rail .value) {
+  position: relative;
+}
+.card::before, .quote::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(150deg, hsl(340 50% 88%), transparent 42%, hsl(28 46% 84%));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--t) var(--ease);
+  pointer-events: none;
+}
+.card:hover::before, .quote:hover::before { opacity: 1; }
+
+/* butonul principal: degradeu diagonal, cu o lumină care trece la hover */
+.btn:not(.btn--light):not(.btn--ghost) {
+  background: linear-gradient(135deg, hsl(340 74% 38%) 0%, hsl(340 88% 26%) 58%, hsl(346 70% 32%) 100%);
+  background-size: 160% 160%;
+  transition: background-position var(--t-slow) var(--ease), transform var(--t) var(--ease),
+    box-shadow var(--t) var(--ease);
+}
+.btn:not(.btn--light):not(.btn--ghost):hover { background-position: 100% 0; }
+
+/* Banda bordo se termina brusc, cu o taietura dreapta in fildes — si prima
+   varianta o inchidea intunecand-o, ceea ce accentua taietura. Acum se
+   inchide cu arc, oglinda celui de sus. */
+.band--ink {
+  border-radius:
+    50% 50% 50% 50% /
+    clamp(24px, 3.5vw, 60px) clamp(24px, 3.5vw, 60px)
+    clamp(24px, 3.5vw, 60px) clamp(24px, 3.5vw, 60px);
+  border-block-width: 1px;
+}
+.band--ink::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 140px;
+  background: linear-gradient(180deg, transparent, hsl(340 46% 22% / 0.55));
+  pointer-events: none;
+  border-radius: inherit;
+}
+.zone--cream, .statement {
+  background-image:
+    radial-gradient(70% 120% at 50% 0%, hsl(38 62% 93%) 0%, transparent 62%),
+    linear-gradient(180deg, var(--zone-cream) 0%, var(--zone-cream-2) 100%);
+}
