@@ -2549,16 +2549,10 @@ p { text-wrap: pretty; }
   border-radius: 50%;
   background: radial-gradient(circle, hsl(var(--tone) 64% 84% / 0.75) 0%, transparent 66%);
 }
-.showcase__art {
-  position: absolute;
-  top: 8%; left: 50%;
-  transform: translateX(-50%);
-  width: min(58%, 230px);
-  height: auto !important;
-  object-fit: contain !important;
-  filter: drop-shadow(0 24px 30px hsl(var(--tone) 45% 25% / 0.3));
-  transition: transform var(--t-slow) var(--ease);
-}
+/* Varianta cu arc a dispărut; ce a rămas din ea e doar tranziția. Regula
+   veche avea „height: auto !important", care bloca înălțimea plăcuței
+   albe și făcea panoul de 870px lângă o listă de 640. */
+.showcase__art { transition: transform var(--t-slow) var(--ease); }
 .showcase:hover .showcase__art { transform: translateX(-50%) translateY(-10px); }
 
 .showcase__plate {
@@ -3539,10 +3533,14 @@ main { counter-reset: sect; }
 /* „space-between" pe listă a împrăștiat rândurile de produs la distanțe
    uriașe unul de altul — mai rău decât golul pe care îl repara. Panoul
    pornește de sus și are o înălțime apropiată de a listei. */
-.tabs-section { align-items: start; }
+/* Panoul cu arc isi impunea o inaltime minima mai mare decat lista de langa
+   el: de aici golul mare din dreapta, sub produse. Acum nu mai forteaza
+   nimic — lista da inaltimea randului, iar panoul se intinde pe ea, cu poza
+   centrata in spatiul ramas. */
+.tabs-section { align-items: stretch; }
 .tabs-section__panel { display: flex; }
-.showcase { min-height: clamp(430px, 42vw, 560px); }
-.showcase .frame__inner { min-height: inherit; }
+.showcase { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.showcase .frame__inner { flex: 1 1 auto; min-height: 0; }
 
 /* --- „Despre": fotografia era mult mai înaltă decât textul, rămânea un gol
    de vreo 200px sub el. Îi dăm pozei aceeași înălțime cu coloana de text. */
@@ -3753,3 +3751,144 @@ h1, h2, .featured__copy h2, .statement__text {
 .vitrine--lead { min-height: 400px; }
 .vitrine--promo { padding-top: clamp(66px, 5.4vw, 78px); }
 .vitrine--promo .vitrine__text { font-size: 0.9rem; }
+
+/* --- Rândurile de produs erau prea mici lângă un panou de 500px: poză de
+   88px și titlu de 0.99rem. Le creștem, ca lista să aibă aceeași greutate
+   vizuală cu panoul de lângă ea. ---------------------------------------- */
+.prow {
+  padding: 14px 16px;
+  gap: 16px;
+  align-items: center;
+}
+.prow__media {
+  width: 104px;
+  height: 104px;
+  flex-basis: 104px;
+  border-radius: 16px;
+}
+.prow__title {
+  font-size: 1.06rem;
+  font-weight: 500;
+  line-height: 1.32;
+}
+.prow__price { font-size: 1.02rem; margin-top: 4px; }
+.prow__price s { font-size: 0.85rem; }
+.prow__go {
+  width: 34px; height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--accent-strong);
+  transition: transform var(--t) var(--ease), background var(--t) var(--ease),
+    border-color var(--t) var(--ease);
+}
+.prow:hover .prow__go {
+  transform: translateX(3px);
+  background: var(--accent-wash);
+  border-color: var(--accent-tint);
+}
+.prow-list { gap: 14px; }
+
+@media (max-width: 560px) {
+  .prow__media { width: 76px; height: 76px; flex-basis: 76px; }
+  .prow__title { font-size: 0.98rem; }
+}
+
+/* ==========================================================================
+   45. PANOUL DE OFERTĂ, REFĂCUT COMPACT
+   Arcul de aramă avea aproape 900px înălțime lângă o listă de 690: rămânea
+   un gol mare în dreapta, sub produse. Greșeala nu era mărimea golului, ci
+   forma: o cutie înaltă și goală se citește ca ceva stricat, în timp ce un
+   panou scurt lângă o listă mai lungă se citește normal.
+   Panoul devine o placă compactă, în aceeași limbă cu plăcile de categorie.
+   ========================================================================== */
+
+.tabs-section { align-items: start; }
+.tabs-section__panel { display: block; }
+
+.showcase {
+  --tone: 340;
+  display: block;
+  min-height: 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: 0 16px 38px -24px hsl(340 60% 20% / 0.5);
+}
+.showcase__inner {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  padding: clamp(18px, 1.8vw, 24px);
+  min-height: 0;
+  background:
+    radial-gradient(110% 80% at 78% 2%, hsl(var(--tone) 58% 40%) 0%, transparent 58%),
+    linear-gradient(158deg, hsl(var(--tone) 56% 32%) 0%, hsl(var(--tone) 74% 20%) 100%);
+}
+
+/* poza stă pe o plăcuță albă — decupajele de produs sunt pe fundal alb,
+   deci acolo se așază firesc */
+.showcase__art {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  height: clamp(190px, 17vw, 250px);
+  object-fit: contain;
+  padding: 18px;
+  border-radius: calc(var(--r-lg) - 6px);
+  background: #fff;
+  mix-blend-mode: normal;
+  transform: none;
+  filter: none;
+}
+.showcase:hover .showcase__art { transform: none; }
+
+.showcase__plate {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  padding: 0 4px 4px;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.showcase__plate .chip {
+  background: hsl(0 0% 100% / 0.14);
+  border: 1px solid hsl(0 0% 100% / 0.28);
+  color: var(--cream);
+}
+.showcase__title { color: #fff; font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.6rem); }
+.showcase__text { color: hsl(0 0% 100% / 0.82); font-size: 0.94rem; max-width: 34ch; }
+.showcase .showcase__plate .btn:not(.btn--ghost) {
+  background: #fff;
+  background-image: none;
+  border-color: #fff;
+  color: hsl(340 78% 26%);
+}
+.showcase .showcase__plate .btn:not(.btn--ghost):hover {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: hsl(340 84% 20%);
+}
+
+.showcase__aura {
+  display: block;
+  position: absolute;
+  z-index: 0;
+  top: -14%; right: -10%;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(28 62% 62% / 0.28) 0%, transparent 68%);
+  transform: none;
+  filter: blur(10px);
+  pointer-events: none;
+}
+.showcase__art, .showcase__plate { z-index: 1; }
+
+/* --- Titlurile se tăiau cu „…" după două rânduri; la corpul de literă mai
+   mare, jumătate din nume dispăreau („Revolax Deep Lidocaină (1x…"). ----- */
+.prow__title { -webkit-line-clamp: 3; }
+.prow__body { min-width: 0; }

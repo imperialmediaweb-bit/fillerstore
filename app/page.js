@@ -252,7 +252,7 @@ export default async function HomePage() {
               items={tabItems}
               categories={categories.map((c) => ({ slug: c.slug, name: c.name }))}
               panel={
-                <div className="showcase frame frame--arch"><span className="frame__inner">
+                <div className="showcase"><span className="showcase__inner">
                   <span className="showcase__aura" aria-hidden="true" />
                   {mezoImage && (
                     <img
