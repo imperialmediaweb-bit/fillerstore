@@ -49,7 +49,13 @@ export default async function DesprePage() {
   // Le folosim pe ale lor și cădem pe content/about.json doar dacă lipsesc —
   // altfel pagina asta ar acoperi conținutul propriu al magazinului.
   const wp = await aboutPage("despre");
-  const paragrafe = wp?.paragraphs?.length ? wp.paragraphs : (about.paragraphs || []);
+  const toate = wp?.paragraphs?.length ? wp.paragraphs : (about.paragraphs || []);
+  // Langa fotografie stau doua paragrafe. Restul textului lor — care e lung —
+  // curge mai jos ca articol, pe o latime de citit, cu titlurile lui cu tot.
+  // Inainte intra tot in coloana din dreapta: fotografia se termina sus, iar
+  // in stanga ramanea un gol de vreo mie de pixeli.
+  const paragrafe = toate.slice(0, 2);
+  const restText = wp?.rest || "";
   const poze = heroSlides();
   const galerie = wp?.photos || [];
   const portret = galerie[0]?.src || about.image || null;
@@ -87,7 +93,7 @@ export default async function DesprePage() {
 
           <Reveal className="about__copy">
             <span className="kicker">Cine suntem</span>
-            <h2>{wp?.title || about.title || "Cine suntem și ce facem"}</h2>
+            <h2>{(wp?.title || "").trim().length > 12 ? wp.title : (about.title || "Cine suntem și ce facem")}</h2>
             {paragrafe.map((p) => (
               <p key={p.slice(0, 24)}>{p}</p>
             ))}
@@ -112,6 +118,14 @@ export default async function DesprePage() {
           </Reveal>
           <Reveal>
             <PhotoGrid photos={galerie.slice(1)} alt="Tratament estetic profesional" />
+          </Reveal>
+        </section>
+      )}
+
+      {restText && (
+        <section className="container section">
+          <Reveal className="article">
+            <div className="wp-content" dangerouslySetInnerHTML={{ __html: restText }} />
           </Reveal>
         </section>
       )}

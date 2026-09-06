@@ -4457,7 +4457,10 @@ img { max-width: 100%; }
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-auto-rows: minmax(140px, auto);
 }
-.photogrid--few { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+/* Pe coloane egale, celulele ieseau late si scunde — arata a bannere, nu a
+   fotografii. Le dam proportie de portret. */
+.photogrid--few { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); grid-auto-rows: auto; }
+.photogrid--few .photogrid__cell { aspect-ratio: 4 / 5; min-height: 0; }
 .photogrid__cell {
   position: relative;
   margin: 0;
