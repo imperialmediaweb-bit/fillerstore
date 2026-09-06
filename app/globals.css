@@ -3699,3 +3699,57 @@ h1, h2, .featured__copy h2, .statement__text {
     radial-gradient(70% 120% at 50% 0%, hsl(38 62% 93%) 0%, transparent 62%),
     linear-gradient(180deg, var(--zone-cream) 0%, var(--zone-cream-2) 100%);
 }
+
+/* --- Pictograma categoriei: un semn clar în colț, ca omul să recunoască
+   tipul de produs înainte să citească titlul. Litera din fundal rămâne
+   filigran — pictograma e cea care se citește. -------------------------- */
+.vitrine__badge {
+  position: absolute;
+  top: clamp(14px, 1.6vw, 22px);
+  left: clamp(16px, 1.8vw, 26px);
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid hsl(0 0% 100% / 0.3);
+  background: hsl(0 0% 100% / 0.08);
+  backdrop-filter: blur(6px);
+  color: var(--cream);
+  transition: transform var(--t) var(--ease), background var(--t) var(--ease),
+    border-color var(--t) var(--ease);
+}
+.vitrine__badge svg { width: 28px; height: 28px; display: block; }
+.vitrine--lead .vitrine__badge { width: 64px; height: 64px; }
+.vitrine--lead .vitrine__badge svg { width: 34px; height: 34px; }
+.vitrine:hover .vitrine__badge {
+  transform: translateY(-2px);
+  background: hsl(0 0% 100% / 0.16);
+  border-color: var(--brass-light);
+  color: #fff;
+}
+
+/* pe placa crem, semnul se inversează */
+.vitrine--promo .vitrine__badge {
+  border-color: hsl(28 40% 66%);
+  background: hsl(38 60% 96% / 0.7);
+  color: hsl(28 56% 32%);
+}
+
+/* titlul coboară puțin ca să nu se lovească de badge pe plăcile mici */
+.vitrine:not(.vitrine--lead) .vitrine__plate { padding-top: 8px; }
+
+/* Placa de promoție are și ea semnul ei, ca rândul să fie unitar. Umplutura
+   trebuie pusă pe placă, nu pe plăcuța de text: conținutul e aliniat jos,
+   deci o umplutură pe text nu îl coboară — semnul cădea peste supratitlu. */
+.vitrine--promo { padding-top: clamp(78px, 7vw, 96px); }
+
+/* --- Placa mare rămăsese cu 60% suprafață goală: umplutura pe care am pus-o
+   ca semnul de pe placa de promoție să nu cadă peste supratitlu a crescut
+   rândul, iar placa mare, care se întinde pe două rânduri, a crescut cu el.
+   Coborâm ambele. ------------------------------------------------------- */
+.vitrines { grid-auto-rows: minmax(168px, auto); }
+.vitrine { min-height: 214px; }
+.vitrine--lead { min-height: 400px; }
+.vitrine--promo { padding-top: clamp(66px, 5.4vw, 78px); }
+.vitrine--promo .vitrine__text { font-size: 0.9rem; }

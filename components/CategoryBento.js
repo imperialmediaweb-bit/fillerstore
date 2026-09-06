@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CategoryIcon from "@/components/CategoryIcon";
 
 // Plăcile de categorie.
 //
@@ -26,6 +27,9 @@ export default function CategoryBento({ categories = [], promo }) {
           >
             <span className="vitrine__aura" aria-hidden="true" />
             <span className="vitrine__shelf" aria-hidden="true" />
+            <span className="vitrine__badge" aria-hidden="true">
+              <CategoryIcon slug={c.slug} />
+            </span>
             <span className="vitrine__mono" aria-hidden="true">{c.name?.[0] || "F"}</span>
             <span className="vitrine__plate">
               <span className="vitrine__eyebrow">
@@ -42,6 +46,9 @@ export default function CategoryBento({ categories = [], promo }) {
       {promo?.title && (
         <div className="vitrine vitrine--promo">
           <span className="vitrine__aura" aria-hidden="true" />
+          <span className="vitrine__badge" aria-hidden="true">
+            <CategoryIcon slug="promo" />
+          </span>
           <span className="vitrine__plate">
             {promo.kicker && <span className="vitrine__eyebrow">{promo.kicker}</span>}
             <span className="vitrine__title">{promo.title}</span>
