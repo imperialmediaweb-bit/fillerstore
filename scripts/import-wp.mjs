@@ -11,6 +11,7 @@
 // Atenție: se rulează local sau pe serverul de deploy, nu din sandbox —
 // are nevoie de acces la internet către site-ul WordPress.
 
+import "./load-env.mjs";
 import { writeFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 

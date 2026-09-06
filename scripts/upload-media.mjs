@@ -12,13 +12,14 @@
 //
 // Steaguri:  --force  reurcă tot,  --limit=N  doar primele N poze.
 
+import "./load-env.mjs";
 import { readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { resolve } from "node:path";
 
 const CONTENT = resolve(process.cwd(), "content");
 const MAP_FILE = resolve(CONTENT, "media-map.json");
-const FOLDER = process.env.CLOUDINARY_FOLDER || "fillerstore";
+const FOLDER = process.env.CLOUDINARY_FOLDER || "filler";
 const CONCURRENCY = 4;
 
 const args = process.argv.slice(2);
