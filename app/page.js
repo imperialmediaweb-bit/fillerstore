@@ -46,14 +46,17 @@ const VALUES = [
 ];
 
 export default async function HomePage() {
-  const [products, posts, categories, pozeDespre] = await Promise.all([
-    getProducts({ limit: 8 }),
+  const [toateProdusele, posts, categories, pozeDespre] = await Promise.all([
+    // toate produsele: din ele arătăm opt, dar cifra din banda bordo trebuie
+    // să fie cea reală, nu numărul celor afișate („4+ produse în stoc")
+    getProducts(),
     getPosts({ limit: 3 }),
     getCategories(),
     // Pagina „Despre" din WordPress are fotografii reale din cabinete, pe
     // care nu le avem nicăieri altundeva. Le aducem și pe prima pagină.
     photosFromPage("despre"),
   ]);
+  const products = toateProdusele.slice(0, 8);
 
   // Hero-ul: întâi sliderul preluat din WordPress (pozele frumoase, cu
   // modele). Dacă nu s-a importat încă, cădem pe pozele produselor.
@@ -337,7 +340,7 @@ export default async function HomePage() {
 
           <Reveal className="stats">
             <div className="stats__item">
-              <b><NumberTicker value={products.length || 20} suffix="+" /></b>
+              <b><NumberTicker value={toateProdusele.length || 20} suffix="+" /></b>
               <span>produse în stoc</span>
             </div>
             <div className="stats__item">

@@ -119,7 +119,18 @@ export default async function WpPage({ params }) {
 
       <section className="container section">
         {areCapitole ? (
-          <Chapters intro={capitole.intro} chapters={capitole.chapters} />
+          <Chapters
+            intro={capitole.intro}
+            chapters={capitole.chapters}
+            aside={{
+              title: "Ai o întrebare?",
+              text: "Despre produs, comandă sau livrare — răspunde cineva care lucrează cu gamele astea.",
+              actions: [
+                { href: "/produse", label: "Vezi produsele", primary: true },
+                { href: "/contact-us", label: "Scrie-ne" },
+              ],
+            }}
+          />
         ) : (
           <Reveal className="article">
             <div className="wp-content" dangerouslySetInnerHTML={{ __html: text }} />

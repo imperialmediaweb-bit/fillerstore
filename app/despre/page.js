@@ -65,6 +65,16 @@ export default async function DesprePage() {
   const poze = heroSlides();
   const galerie = wp?.photos || [];
   const portret = galerie[0]?.src || about.image || null;
+  // Fotografiile care intră între capitole. Întâi ce a mai rămas din pozele
+  // lor, apoi cele din slider — tot ale lor, dar nefolosite pe pagina asta.
+  // Fără ele, textul lung ar curge douăzeci de ecrane fără nicio pauză.
+  const pozeIntercalate = [];
+  const vazute = new Set([portret, ...galerie.slice(1, 5).map((g) => g.src)]);
+  for (const p of [...galerie.slice(5), ...poze.map((s) => ({ src: s.raw || s.src, alt: s.alt }))]) {
+    if (!p?.src || vazute.has(p.src)) continue;
+    vazute.add(p.src);
+    pozeIntercalate.push({ src: p.src, alt: p.alt || "" });
+  }
   const banda = galerie[1]?.src || poze[2]?.raw || poze[0]?.raw || about.image || null;
 
   return (
@@ -123,7 +133,7 @@ export default async function DesprePage() {
             </div>
           </Reveal>
           <Reveal>
-            <PhotoGrid photos={galerie.slice(1)} alt="Tratament estetic profesional" />
+            <PhotoGrid photos={galerie.slice(1, 5)} alt="Tratament estetic profesional" />
           </Reveal>
         </section>
       )}
@@ -136,7 +146,20 @@ export default async function DesprePage() {
               <h2>Ce găsești la Filler Store</h2>
             </div>
           </Reveal>
-          <Chapters intro={capitole.intro} chapters={capitole.chapters} kicker="Cuprins" />
+          <Chapters
+            intro={capitole.intro}
+            chapters={capitole.chapters}
+            kicker="Cuprins"
+            photos={pozeIntercalate}
+            aside={{
+              title: "Ai o întrebare?",
+              text: "Despre produs, protocol sau termen de livrare — răspunde cineva care lucrează cu gamele astea.",
+              actions: [
+                { href: "/produse", label: "Vezi produsele", primary: true },
+                { href: "/contact-us", label: "Scrie-ne" },
+              ],
+            }}
+          />
         </section>
       )}
 
