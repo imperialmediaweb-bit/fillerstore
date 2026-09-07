@@ -12,6 +12,8 @@ import { siteConfig } from "@/lib/site";
 import { pageMeta, breadcrumbLd, JsonLd } from "@/lib/seo";
 import PhotoGrid from "@/components/PhotoGrid";
 import { aboutPage } from "@/lib/pagePhotos";
+import { chaptersFromHtml } from "@/lib/wpBlocks";
+import Chapters from "@/components/Chapters";
 import about from "@/content/about.json";
 
 export const revalidate = 300;
@@ -55,7 +57,11 @@ export default async function DesprePage() {
   // Inainte intra tot in coloana din dreapta: fotografia se termina sus, iar
   // in stanga ramanea un gol de vreo mie de pixeli.
   const paragrafe = toate.slice(0, 2);
-  const restText = wp?.rest || "";
+  // Restul textului lor, pe capitole cu cuprins. Paragrafele deja arătate
+  // lângă fotografie nu se repetă; ilustrațiile, rândurile de un cuvânt și
+  // listele de legături din constructorul lor de pagini nu intră deloc.
+  const capitole = chaptersFromHtml(wp?.raw || "", { skip: paragrafe });
+  const areCapitole = capitole.intro.length + capitole.chapters.length > 0;
   const poze = heroSlides();
   const galerie = wp?.photos || [];
   const portret = galerie[0]?.src || about.image || null;
@@ -122,11 +128,15 @@ export default async function DesprePage() {
         </section>
       )}
 
-      {restText && (
+      {areCapitole && (
         <section className="container section">
-          <Reveal className="article">
-            <div className="wp-content" dangerouslySetInnerHTML={{ __html: restText }} />
+          <Reveal className="section__head">
+            <div className="section__head-text">
+              <span className="kicker">Pe larg</span>
+              <h2>Ce găsești la Filler Store</h2>
+            </div>
           </Reveal>
+          <Chapters intro={capitole.intro} chapters={capitole.chapters} kicker="Cuprins" />
         </section>
       )}
 

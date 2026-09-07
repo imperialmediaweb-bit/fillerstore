@@ -14,6 +14,8 @@ import Newsletter from "@/components/Newsletter";
 import Reveal from "@/components/Reveal";
 import { getPage, getPages, excerpt, stripHtml } from "@/lib/content";
 import { photosFromPage, contentAfterIntro } from "@/lib/pagePhotos";
+import { chaptersFromHtml } from "@/lib/wpBlocks";
+import Chapters from "@/components/Chapters";
 import { siteConfig } from "@/lib/site";
 import { pageMeta, breadcrumbLd, JsonLd } from "@/lib/seo";
 
@@ -84,8 +86,15 @@ export default async function WpPage({ params }) {
   const rezumat = areRezumat
     ? excerpt(page.excerpt, 165)
     : excerpt(primul ? primul[1] : page.content, 165);
-  // Textul fără poze: le arătăm o dată, în mozaic, nu de două ori.
-  const text = contentAfterIntro(page.content, areRezumat ? 0 : 1);
+  // Textul pe capitole, cu cuprins când sunt destule. Paragraful care a
+  // devenit rezumat nu se repetă; pozele apar o dată, în mozaic.
+  const capitole = chaptersFromHtml(page.content, {
+    skip: areRezumat || !primul ? [] : [stripHtml(primul[1])],
+  });
+  const areCapitole = capitole.intro.length + capitole.chapters.length > 0;
+  // Dacă textul lor nu are nici paragrafe, nici titluri (un tabel, de pildă),
+  // îl arătăm așa cum e, fără poze.
+  const text = areCapitole ? "" : contentAfterIntro(page.content, areRezumat ? 0 : 1);
   const crumbs = [{ href: "/", label: "Acasă" }, { label: page.title }];
 
   return (
@@ -109,9 +118,13 @@ export default async function WpPage({ params }) {
       )}
 
       <section className="container section">
-        <Reveal className="article">
-          <div className="wp-content" dangerouslySetInnerHTML={{ __html: text }} />
-        </Reveal>
+        {areCapitole ? (
+          <Chapters intro={capitole.intro} chapters={capitole.chapters} />
+        ) : (
+          <Reveal className="article">
+            <div className="wp-content" dangerouslySetInnerHTML={{ __html: text }} />
+          </Reveal>
+        )}
       </section>
 
       <Newsletter />

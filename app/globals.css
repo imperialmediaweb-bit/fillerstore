@@ -3452,36 +3452,12 @@ main { counter-reset: sect; }
 main { counter-reset: sect; }
 .section__head { counter-increment: sect; position: relative; }
 .section__head-text { position: relative; }
-/* Indicele de secțiune stă în spatele TITLULUI, nu al întregului bloc.
-   Ancorat pe bloc, cifra de 150px cădea peste supratitlu — „01" peste
-   „DIN CABINET" — și arăta ca o greșeală de tipar. */
-.section__head-text h1::before,
-.section__head-text h2::before {
-  content: counter(sect, decimal-leading-zero);
-  position: absolute;
-  left: -0.04em;
-  top: 50%;
-  transform: translateY(-52%);
-  z-index: -1;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(70px, 8vw, 150px);
-  line-height: 0.8;
-  letter-spacing: -0.05em;
-  color: transparent;
-  background: var(--metal);
-  -webkit-background-clip: text;
-  background-clip: text;
-  opacity: 0.16;
-  pointer-events: none;
-  user-select: none;
-}
-.band--ink .section__head-text h2::before { opacity: 0.26; }
-/* titlul devine reper pentru filigran și își face context propriu */
+/* Cifra de secțiune ca filigran (01, 02, 03) a fost scoasă: pe site-ul
+   publicat cădea exact peste titlu — „01" prin „Produsele noastre, la
+   lucru" — și arăta ca o eroare de tipar, nu ca un ornament. Contorul
+   rămâne, îl folosim discret în cuprinsul capitolelor. */
 .section__head-text h1,
-.section__head-text h2 { position: relative; isolation: isolate; }
-/* pe benzile fără indice (antetul paginilor) nu punem cifra */
-.pagehead .section__head-text h1::before { content: none; }
+.section__head-text h2 { position: relative; }
 
 /* --- Banda-citat: o singură frază, pe toată lățimea ---------------------- */
 .statement {
@@ -4533,3 +4509,167 @@ img { max-width: 100%; }
 .product__gallery .slider__slide,
 .featured__media .slider--gallery { background: #fff; }
 .featured__media .slider__slide img { mix-blend-mode: normal; }
+
+
+/* --- 51. Capitole: textul lung din WordPress, pus în pagină cu cuprins ---
+   Pagina „Despre" are 2.000 de cuvinte de la ei — 12 titluri, liste,
+   paragrafe. Vărsate într-o coloană, erau 40 de ecrane fără reper. Acum:
+   cuprins lipicios în stânga, capitole numerotate în dreapta, listele ca
+   bife pe două coloane. ---------------------------------------------- */
+.chapters { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+@media (min-width: 981px) {
+  .chapters--nav { grid-template-columns: 264px minmax(0, 1fr); }
+}
+.chapters__body { min-width: 0; max-width: 760px; }
+.chapters--nav .chapters__body { max-width: none; }
+
+.chapters__nav {
+  position: sticky;
+  top: calc(var(--header-h) + 22px);
+  display: grid;
+  gap: 14px;
+  padding: 22px 20px;
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(120% 80% at 100% 0%, hsl(345 70% 96%) 0%, transparent 60%),
+    linear-gradient(165deg, #fff 0%, var(--accent-wash) 100%);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 10px 30px -22px hsl(345 40% 30% / 0.35);
+}
+.chapters__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.chapters__list a {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.chapters__idx {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: transparent;
+  background: var(--metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.chapters__list a:hover { background: var(--accent-soft); color: var(--ink); transform: translateX(2px); }
+.chapters__list a[aria-current="true"] { background: var(--accent-strong); color: #fff; }
+.chapters__list a[aria-current="true"] .chapters__idx { color: var(--brass-light); background: none; -webkit-background-clip: initial; background-clip: initial; }
+
+/* pe telefon cuprinsul devine un rând de pastile care se derulează */
+@media (max-width: 980px) {
+  .chapters__nav { position: static; padding: 16px 16px 12px; }
+  .chapters__list { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; margin-inline: -4px; }
+  .chapters__list::-webkit-scrollbar { display: none; }
+  .chapters__list li { flex: 0 0 auto; }
+  .chapters__list a { display: inline-flex; gap: 8px; white-space: nowrap; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line-strong); font-size: 0.86rem; }
+  .chapters__list a[aria-current="true"] { border-color: transparent; }
+}
+
+.chapter { padding-block: clamp(26px, 3.6vw, 44px); border-top: 1px solid var(--line-strong); }
+.chapter:first-child { padding-top: 0; border-top: 0; }
+.chapter--intro { padding-top: 0; }
+.chapter--intro p { font-size: 1.14rem; line-height: 1.7; color: var(--ink-soft); }
+.chapter__head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: baseline;
+  margin-bottom: clamp(14px, 2vw, 22px);
+}
+.chapter__num {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1;
+  color: transparent;
+  background: var(--metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  letter-spacing: -0.03em;
+}
+.chapter__head h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.chapter__body { display: grid; gap: 1em; max-width: 72ch; }
+.chapter__body > p { margin: 0; font-size: 1.04rem; line-height: 1.75; color: var(--ink-soft); }
+.chapter__body strong { color: var(--ink); font-weight: 600; }
+.chapter__body a { color: var(--accent-strong); text-decoration: underline; text-decoration-color: var(--accent-tint); text-underline-offset: 3px; }
+.chapter__body a:hover { text-decoration-color: var(--accent); }
+.chapter__sub {
+  margin: 0.8em 0 0;
+  padding-left: 14px;
+  border-left: 3px solid;
+  border-image: var(--metal) 1;
+  font-size: 1.16rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+h4.chapter__sub { font-size: 1.04rem; border-left-width: 2px; }
+.chapter__quote {
+  margin: 0.4em 0;
+  padding: 18px 22px;
+  border-radius: var(--r);
+  background: var(--accent-soft);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.14rem;
+  line-height: 1.5;
+  color: var(--accent-strong);
+}
+
+/* listele: fiecare punct e o cartelă cu bifă, pe două coloane când încap */
+.checks { list-style: none; margin: 0.2em 0 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); counter-reset: bifa; }
+.checks li {
+  position: relative;
+  padding: 13px 16px 13px 46px;
+  border-radius: var(--r);
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.checks li:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -20px hsl(345 40% 30% / 0.45); border-color: var(--accent-tint); }
+.checks li::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 15px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--grad);
+  box-shadow: 0 4px 10px -4px var(--glow);
+}
+.checks li::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 8px;
+  height: 4.5px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg);
+}
+.checks--ordered li::before { background: var(--accent-strong); }
+.checks--ordered li::after { content: counter(bifa); counter-increment: bifa; border: 0; transform: none; left: 14px; top: 15px; width: 20px; height: 20px; display: grid; place-items: center; font-size: 0.7rem; font-weight: 700; color: #fff; }
+
+/* secțiunea are aceeași umplutură ca restul paginii, iar reper de derulare
+   sub antetul lipicios */
+.chapter[id] { scroll-margin-top: calc(var(--header-h) + 28px); }
+/* la trei sau cinci puncte, ultima cartelă nu rămâne singură cu o gaură lângă ea */
+.checks li:last-child:nth-child(odd):not(:first-child) { grid-column: 1 / -1; }
