@@ -1,32 +1,46 @@
-// Orice pagină din WordPress (Despre, Contact, Termeni...) se servește
-// automat la aceeași adresă: /despre, /contact, /termeni-si-conditii.
+// Orice pagină din WordPress (Termeni, Livrare, Întrebări frecvente…) se
+// servește automat la aceeași adresă: /termeni-si-conditii, /livrare-si-plata.
+//
+// Toate primesc același tratament ca paginile scrise de noi: antet bordo cu
+// titlul mare, fotografiile scoase din text și așezate în mozaic, iar textul
+// pe o lățime de citit. Înainte erau firimituri, un titlu pe fond gol și
+// conținutul brut — arătau ca dintr-un alt site.
 import { notFound } from "next/navigation";
-import ThemeStyle from "@/components/ThemeStyle";
-import Slider from "@/components/Slider";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import Link from "next/link";
-import { getPage, getPages, imagesFromHtml, excerpt } from "@/lib/content";
+import ThemeStyle from "@/components/ThemeStyle";
+import PageHead from "@/components/PageHead";
+import PhotoGrid from "@/components/PhotoGrid";
+import Newsletter from "@/components/Newsletter";
+import Reveal from "@/components/Reveal";
+import { getPage, getPages, excerpt, stripHtml } from "@/lib/content";
+import { photosFromPage, contentAfterIntro } from "@/lib/pagePhotos";
 import { siteConfig } from "@/lib/site";
-import { img, srcSet } from "@/lib/img";
 import { pageMeta, breadcrumbLd, JsonLd } from "@/lib/seo";
 
 export const revalidate = 300;
 
-// Adresele la care trimit meniul si subsolul. Daca importul din WordPress
-// nu reuseste (asa cum s-a intamplat deja o data), toate astea ar da 404 si
-// jumatate din navigatie ar fi moarta. Pentru ele afisam o pagina de
-// asteptare, neindexata, in loc de eroare.
+// Adresele care au deja pagina lor scrisă de noi. Dacă le-am genera și de
+// aici, s-ar produce două pagini pentru aceeași adresă, iar cea din
+// WordPress ar câștiga — exact ce s-a întâmplat cu /despre.
+const RUTE_PROPRII = new Set(["despre", "contact-us"]);
+
+// Adresele la care trimit meniul și subsolul. Dacă importul din WordPress nu
+// reușește (s-a întâmplat deja o dată), toate ar da 404 și jumătate din
+// navigație ar fi moartă. Pentru ele afișăm o pagină de așteptare.
 const LEGATURI_CUNOSCUTE = new Map(
   [...siteConfig.nav, ...siteConfig.footer.flatMap((c) => c.links)]
     .filter((l) => l.href.startsWith("/") && !l.href.includes("?") && l.href !== "/")
     .map((l) => [l.href.replace(/^\//, ""), l.label])
 );
 
-// Adrese care au deja pagina lor scrisa de noi. Daca le-am genera si de aici,
-// s-ar produce doua pagini pentru aceeasi adresa, iar cea din WordPress ar
-// castiga — exact ce s-a intamplat cu /despre. Continutul lor din WordPress
-// nu se pierde: paginile proprii il citesc si il afiseaza in designul nou.
-const RUTE_PROPRII = new Set(["despre", "contact-us"]);
+// Supratitlul: coloana din subsol în care stă pagina. „Livrare și plată" e
+// sub „Informații", „Termeni și condiții" sub „Legal" — omul vede din prima
+// unde a ajuns.
+const SECTIUNE = new Map(
+  siteConfig.footer.flatMap((col) =>
+    col.links.map((l) => [l.href.replace(/^\//, ""), col.title])
+  )
+);
 
 export async function generateStaticParams() {
   const pages = await getPages();
@@ -58,14 +72,20 @@ export default async function WpPage({ params }) {
     return <PaginaInPregatire slug={slug} titlu={label} />;
   }
 
-  const gallery = imagesFromHtml(page.content);
-  const slides = gallery.map((g) => ({
-    src: img(g.src, { w: 1000 }),
-    srcSet: srcSet(g.src, [500, 800, 1200]),
-    thumb: img(g.src, { w: 160, h: 160, fit: "contain" }),
-    alt: g.alt || page.title,
-  }));
+  const poze = await photosFromPage(slug);
 
+  // Când pagina nu are rezumat propriu în WordPress, rezumatul din antet e
+  // chiar începutul textului. Fără asta, primul paragraf apărea de două ori:
+  // o dată sub titlu și o dată în articol.
+  const areRezumat = stripHtml(page.excerpt || "").length > 20;
+  // Rezumatul se ia din primul paragraf, nu din tot textul: altfel taia in
+  // mijlocul frazei urmatoare ("...Vanzator: DENTAL PLUS...").
+  const primul = (page.content || "").match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+  const rezumat = areRezumat
+    ? excerpt(page.excerpt, 165)
+    : excerpt(primul ? primul[1] : page.content, 165);
+  // Textul fără poze: le arătăm o dată, în mozaic, nu de două ori.
+  const text = contentAfterIntro(page.content, areRezumat ? 0 : 1);
   const crumbs = [{ href: "/", label: "Acasă" }, { label: page.title }];
 
   return (
@@ -73,42 +93,48 @@ export default async function WpPage({ params }) {
       <ThemeStyle seed={page.slug} />
       <JsonLd data={breadcrumbLd(crumbs)} />
 
-      <div className="container section">
-        <article className="article">
-          <Breadcrumbs items={crumbs} />
+      <PageHead
+        kicker={SECTIUNE.get(slug) || siteConfig.name}
+        title={page.title}
+        lead={rezumat}
+        crumbs={crumbs}
+      />
 
-          <header className="article__head">
-            <h1>{page.title}</h1>
-          </header>
+      {poze.length > 0 && (
+        <section className="container section">
+          <Reveal>
+            <PhotoGrid photos={poze} alt={page.title} />
+          </Reveal>
+        </section>
+      )}
 
-          {slides.length > 1 && (
-            <Slider slides={slides} variant="gallery" thumbs sizes="(max-width: 780px) 100vw, 780px" />
-          )}
+      <section className="container section">
+        <Reveal className="article">
+          <div className="wp-content" dangerouslySetInnerHTML={{ __html: text }} />
+        </Reveal>
+      </section>
 
-          <div className="wp-content" dangerouslySetInnerHTML={{ __html: page.content }} />
-        </article>
-      </div>
+      <Newsletter />
     </>
   );
 }
 
-// Pagina de rezerva pentru o adresa din meniu sau subsol al carei continut nu
-// a venit din WordPress. Nu inventam text: spunem ce se intampla si trimitem
-// omul unde poate ajunge. Neindexata, ca sa nu intre asa in Google.
+// Pagina de rezervă pentru o adresă din meniu sau subsol al cărei conținut nu
+// a venit din WordPress. Nu inventăm text: spunem ce se întâmplă și trimitem
+// omul unde poate ajunge. Neindexată, ca să nu intre așa în Google.
 function PaginaInPregatire({ slug, titlu }) {
   return (
     <>
       <ThemeStyle seed={slug} />
-      <div className="container section">
-        <article className="article">
-          <Breadcrumbs items={[{ href: "/", label: "Acasă" }, { label: titlu }]} />
-          <header className="article__head">
-            <h1>{titlu}</h1>
-          </header>
-          <p className="lead">
-            Pagina aceasta se pregătește. Până atunci, îți stăm la dispoziție
-            pentru orice întrebare despre produse, comenzi sau livrare.
-          </p>
+      <PageHead
+        kicker={SECTIUNE.get(slug) || siteConfig.name}
+        title={titlu}
+        lead="Pagina aceasta se pregătește. Până atunci, îți stăm la dispoziție pentru orice întrebare despre produse, comenzi sau livrare."
+        crumbs={[{ href: "/", label: "Acasă" }, { label: titlu }]}
+      />
+
+      <section className="container section">
+        <div className="article">
           <p className="muted">
             {siteConfig.company.legalName} · CUI {siteConfig.company.cui} ·{" "}
             {siteConfig.company.address.street}, {siteConfig.company.address.region}
@@ -116,8 +142,10 @@ function PaginaInPregatire({ slug, titlu }) {
           <p>
             <Link href="/produse" className="btn">Vezi produsele</Link>
           </p>
-        </article>
-      </div>
+        </div>
+      </section>
+
+      <Newsletter />
     </>
   );
 }
