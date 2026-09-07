@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ThemeStyle from "@/components/ThemeStyle";
-import Slider from "@/components/Slider";
 import PostCard from "@/components/PostCard";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import PageHead from "@/components/PageHead";
 import ReadProgress from "@/components/ReadProgress";
 import Reveal from "@/components/Reveal";
 import Newsletter from "@/components/Newsletter";
@@ -41,15 +40,19 @@ export default async function PostPage({ params }) {
 
   const related = await getRelatedPosts(post, 3);
 
-  // galeria articolului: poza principală + pozele din corpul textului
-  const gallery = imagesFromHtml(post.content);
-  if (post.image && !gallery.some((g) => g.src === post.image.src)) gallery.unshift(post.image);
-  const slides = gallery.map((g) => ({
-    src: img(g.src, { w: 1000 }),
-    srcSet: srcSet(g.src, [500, 800, 1200]),
-    thumb: img(g.src, { w: 160, h: 160, fit: "contain" }),
-    alt: g.alt || post.title,
-  }));
+  // Coperta: poza principală a articolului sau, dacă lipsește, prima din
+  // text. Restul pozelor rămân în text, la locul lor — un articol se
+  // citește cu pozele lângă paragrafele lor, nu cu toate într-un slider sus.
+  // Înainte, aceeași poză apărea de două ori: în slider și în corp.
+  const inText = imagesFromHtml(post.content);
+  const cover = post.image || inText[0] || null;
+  let body = post.content;
+  if (cover && !post.image) {
+    // scoatem din text doar eticheta <img> a copertei, cautand-o dupa adresa
+    body = body.replace(/<img[^>]*>/gi, (tag) => (tag.includes(cover.src) ? "" : tag));
+  }
+  const categorie = post.categories?.[0]?.name || "Blog";
+  const data = new Date(post.date).toLocaleDateString("ro-RO", { day: "numeric", month: "long", year: "numeric" });
 
   const crumbs = [{ href: "/", label: "Acasă" }, { href: "/blog", label: "Blog" }, { label: post.title }];
 
@@ -60,38 +63,30 @@ export default async function PostPage({ params }) {
       <JsonLd data={articleLd(post)} />
       <JsonLd data={breadcrumbLd(crumbs)} />
 
+      <PageHead
+        kicker={`Blog · ${categorie}`}
+        title={post.title}
+        crumbs={crumbs}
+        facts={[
+          { value: data, label: "publicat" },
+          { value: `${readingTime(post.content)} min`, label: "timp de citire" },
+        ]}
+      />
+
       <div className="container section">
         <article className="article article--post">
-          <Breadcrumbs items={crumbs} />
-
-          <header className="article__head">
-            <span className="kicker">Blog</span>
-            <h1>{post.title}</h1>
-            <div className="article__meta">
-              <span>
-                <time dateTime={post.date}>
-                  {new Date(post.date).toLocaleDateString("ro-RO", { day: "numeric", month: "long", year: "numeric" })}
-                </time>
-              </span>
-              <span>{readingTime(post.content)} min de citit</span>
-            </div>
-          </header>
-
-          {slides.length > 1 ? (
-            <Slider slides={slides} variant="gallery" thumbs sizes="(max-width: 780px) 100vw, 780px" priority />
-          ) : slides.length === 1 ? (
+          {cover && (
             <img
               className="article__cover"
-              src={slides[0].src}
-              srcSet={slides[0].srcSet}
-              sizes="(max-width: 780px) 100vw, 780px"
-              alt={slides[0].alt}
+              src={img(cover.src, { w: 1400, h: 800 })}
+              srcSet={srcSet(cover.src, [700, 1000, 1400])}
+              sizes="(max-width: 820px) 100vw, 780px"
+              alt={cover.alt || post.title}
               loading="eager"
               decoding="async"
             />
-          ) : null}
-
-          <div className="wp-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+          )}
+          <div className="wp-content" dangerouslySetInnerHTML={{ __html: body }} />
         </article>
       </div>
 

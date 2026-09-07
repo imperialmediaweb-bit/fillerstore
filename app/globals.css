@@ -4516,3 +4516,20 @@ img { max-width: 100%; }
 /* --- „Cu ce lucrăm" avea titlul, apoi 150px de nimic, apoi siglele. ----- */
 .section--tight + .brands { margin-top: calc(-1 * clamp(14px, 2vw, 26px)); }
 .brands + .newsletter, .brands + * > .newsletter { margin-top: 0; }
+
+/* --- 404: cifra iesea portocalie, din nuanta de tema a paginii — in afara
+   paletei. Trece pe arama, ca restul accentelor. --- */
+.notfound__code {
+  background: var(--metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* --- Galeria de produs: decupajele sunt pe alb, deci si cardul e alb; pe
+   crem ieseau ca un dreptunghi alb intr-o cutie bej. --- */
+.product__gallery .slider--gallery,
+.product__gallery .slider__slide,
+.featured__media .slider--gallery { background: #fff; }
+.featured__media .slider__slide img { mix-blend-mode: normal; }

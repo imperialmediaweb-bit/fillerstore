@@ -22,6 +22,15 @@ import { pageMeta, productLd, breadcrumbLd, faqLd, JsonLd } from "@/lib/seo";
 
 export const revalidate = 300;
 
+// Scoate un titlu de la inceputul descrierii daca repeta numele produsului
+// (ignorand spatiile si diferentele de tip "0.5ml" / "0.5 ml").
+function faraTitluDublat(html = "", name = "") {
+  const m = html.match(/^\s*<h[2-4][^>]*>([\s\S]*?)<\/h[2-4]>/i);
+  if (!m) return html;
+  const norm = (s) => s.replace(/<[^>]+>/g, "").replace(/\s+/g, "").toLowerCase();
+  return norm(m[1]) === norm(name) ? html.slice(m[0].length) : html;
+}
+
 // Prerandăm toate produsele — paginile devin fișiere statice.
 export async function generateStaticParams() {
   const products = await getProducts();
@@ -191,7 +200,9 @@ export default async function ProductPage({ params }) {
           <div className="product__description">
             <div className="article">
               <h2>Descriere</h2>
-              <div className="wp-content" dangerouslySetInnerHTML={{ __html: product.description }} />
+              {/* descrierile noastre incep cu numele produsului ca subtitlu —
+                  sub "Descriere" era o dublare; il scoatem daca e primul */}
+              <div className="wp-content" dangerouslySetInnerHTML={{ __html: faraTitluDublat(product.description, product.name) }} />
             </div>
           </div>
         )}
