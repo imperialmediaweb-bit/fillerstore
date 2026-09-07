@@ -3452,11 +3452,16 @@ main { counter-reset: sect; }
 main { counter-reset: sect; }
 .section__head { counter-increment: sect; position: relative; }
 .section__head-text { position: relative; }
-.section__head-text::before {
+/* Indicele de secțiune stă în spatele TITLULUI, nu al întregului bloc.
+   Ancorat pe bloc, cifra de 150px cădea peste supratitlu — „01" peste
+   „DIN CABINET" — și arăta ca o greșeală de tipar. */
+.section__head-text h1::before,
+.section__head-text h2::before {
   content: counter(sect, decimal-leading-zero);
   position: absolute;
   left: -0.04em;
-  top: -0.42em;
+  top: 50%;
+  transform: translateY(-52%);
   z-index: -1;
   font-family: var(--font-display);
   font-weight: 600;
@@ -3471,9 +3476,12 @@ main { counter-reset: sect; }
   pointer-events: none;
   user-select: none;
 }
-.band--ink .section__head-text::before { opacity: 0.26; }
-/* filigranul stă în spatele titlului, deci are nevoie de context propriu */
-.section__head-text { isolation: isolate; }
+.band--ink .section__head-text h2::before { opacity: 0.26; }
+/* titlul devine reper pentru filigran și își face context propriu */
+.section__head-text h1,
+.section__head-text h2 { position: relative; isolation: isolate; }
+/* pe benzile fără indice (antetul paginilor) nu punem cifra */
+.pagehead .section__head-text h1::before { content: none; }
 
 /* --- Banda-citat: o singură frază, pe toată lățimea ---------------------- */
 .statement {
@@ -4459,7 +4467,18 @@ img { max-width: 100%; }
 }
 /* Pe coloane egale, celulele ieseau late si scunde — arata a bannere, nu a
    fotografii. Le dam proportie de portret. */
-.photogrid--few { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); grid-auto-rows: auto; }
+/* Cu doua poze, "1fr" facea celule de 645px latime si 800px inaltime.
+   Le tinem intre 240 si 340px si le centram. */
+/* Cate poze sunt, atata loc primesc. Cu doua, "1fr" facea placi de 645x800;
+   cu latime fixa de 340px se pierdeau in mijlocul paginii. Asa ca proportia
+   se schimba dupa numar: putine si late, multe si inalte. */
+.photogrid--few {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  grid-auto-rows: auto;
+}
+.photogrid--few[data-n="1"] { grid-template-columns: minmax(0, 1fr); max-width: 900px; margin-inline: auto; }
+.photogrid--few[data-n="1"] .photogrid__cell { aspect-ratio: 16 / 9; }
+.photogrid--few[data-n="2"] .photogrid__cell { aspect-ratio: 4 / 3; }
 .photogrid--few .photogrid__cell { aspect-ratio: 4 / 5; min-height: 0; }
 .photogrid__cell {
   position: relative;
@@ -4493,3 +4512,7 @@ img { max-width: 100%; }
   .photogrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .photogrid__cell--lead { grid-column: span 2; grid-row: span 1; min-height: 260px; }
 }
+
+/* --- „Cu ce lucrăm" avea titlul, apoi 150px de nimic, apoi siglele. ----- */
+.section--tight + .brands { margin-top: calc(-1 * clamp(14px, 2vw, 26px)); }
+.brands + .newsletter, .brands + * > .newsletter { margin-top: 0; }

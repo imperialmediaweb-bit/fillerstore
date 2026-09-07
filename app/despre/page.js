@@ -104,7 +104,7 @@ export default async function DesprePage() {
         </div>
       </section>
 
-      {galerie.length > 1 && (
+      {galerie.length > 2 && (
         <section className="container section">
           <Reveal className="section__head">
             <div className="section__head-text">

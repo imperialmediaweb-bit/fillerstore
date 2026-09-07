@@ -15,7 +15,7 @@ export default function PhotoGrid({ photos = [], alt = "" }) {
   const egale = !mozaic;
 
   return (
-    <div className={`photogrid${egale ? " photogrid--few" : ""}`}>
+    <div className={`photogrid${egale ? " photogrid--few" : ""}`} data-n={list.length}>
       {list.map((p, i) => (
         <figure key={p.src} className={i === 0 && !egale ? "photogrid__cell photogrid__cell--lead" : "photogrid__cell"}>
           <img
