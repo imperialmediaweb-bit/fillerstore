@@ -4871,3 +4871,44 @@ h4.chapter__sub { font-size: 1.04rem; border-left-width: 2px; }
 }
 /* poza ține loc de linie despărțitoare: capitolul de după ea nu mai are una */
 .chapter__figure + .chapter { border-top: 0; }
+
+/* ==========================================================================
+   53. DECUPAJUL FOTOGRAFIILOR
+   Pe site-ul publicat, în „Cum arată treaba bine făcută" și în mozaicul din
+   „Despre", oamenilor din poze le lipsea capul: una era tăiată la sprâncene,
+   alta arăta o bărbie cu două mâini în mănuși și nimic deasupra, a treia era
+   retezată prin ochi.
+   Cauza: toate fotografiile lor sunt portrete de frumusețe, cu chipul în
+   treimea de sus, iar noi le puneam în cadre late și le decupam din centru.
+   Două reguli, peste tot: cadre mai apropiate de forma pozei și decupaj
+   ancorat sus, unde stă chipul.
+   ========================================================================== */
+
+.photogrid__cell img,
+.chapter__figure img,
+.about__media img,
+.grid--3 .card__media img,
+.card__media--wide img,
+.postcard__media img {
+  object-position: center 22%;
+}
+
+/* două fotografii una lângă alta: portrete, nu benzi late */
+.photogrid--few[data-n="2"] .photogrid__cell { aspect-ratio: 4 / 5; }
+.photogrid--few[data-n="1"] .photogrid__cell { aspect-ratio: 3 / 2; }
+.photogrid--few[data-n="1"] .photogrid__cell img { object-position: center 26%; }
+
+/* fotografia dintre capitole: 16/8.4 tăia din portret cât o felie de pâine */
+.chapter__figure img { aspect-ratio: 3 / 2; }
+.chapter__figure--tall img { aspect-ratio: 5 / 4; }
+@media (max-width: 700px) {
+  .chapter__figure img,
+  .chapter__figure--tall img { aspect-ratio: 4 / 5; }
+}
+
+/* portretul din „Cine suntem": cadrul e înalt, poza e înaltă — decupăm puțin
+   și de sus, ca părul să nu fie retezat */
+.about__media img { object-position: center 18%; }
+
+/* banda foto ține chipul în dreapta, unde nu ajunge perdeaua bordo */
+.photoband img { object-position: 74% 28%; }
